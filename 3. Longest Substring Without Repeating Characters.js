@@ -28,3 +28,32 @@ var lengthOfLongestSubstring = function (s) {
   //return maxString
   return maxLength;
 };
+
+// optimized
+/**
+ * @param {string} s
+ * @return {number}
+ */
+var lengthOfLongestSubstring2 = function (s) {
+  if (s.length === 1) return 1;
+
+  let left = 0,
+    longest = 0;
+
+  const seen = {};
+
+  for (let right = 0; right < s.length; right += 1) {
+    const curChar = s[right];
+    const preSeen = seen[curChar];
+
+    if (preSeen >= left) {
+      left = preSeen + 1;
+    }
+
+    seen[curChar] = right;
+
+    longest = Math.max(longest, right - left + 1);
+  }
+
+  return longest;
+};
