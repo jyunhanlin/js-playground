@@ -7,10 +7,8 @@ function MyPromise(executor) {
   this.cbs = [];
 
   const resolve = (value) => {
-    setTimeout(() => {
-      this.data = value;
-      this.cbs.forEach((cb) => cb(value));
-    }, 0);
+    this.data = value;
+    this.cbs.forEach((cb) => cb(value));
   };
 
   executor(resolve);
@@ -19,12 +17,14 @@ function MyPromise(executor) {
 MyPromise.prototype.then = function (onResolved) {
   return new MyPromise((resolve) => {
     this.cbs.push(() => {
-      const res = onResolved(this.data);
-      if (res instanceof MyPromise) {
-        res.then(resolve);
-      } else {
-        resolve(res);
-      }
+      setTimeout(() => {
+        const res = onResolved(this.data);
+        if (res instanceof MyPromise) {
+          res.then(resolve);
+        } else {
+          resolve(res);
+        }
+      }, 0);
     });
   });
 };

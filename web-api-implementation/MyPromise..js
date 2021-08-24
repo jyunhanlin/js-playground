@@ -59,29 +59,7 @@ class MyPromise {
     let promise2;
 
     promise2 = new Promise((resolve, reject) => {
-      if (this.status === FULFILLED) {
-        setTimeout(() => {
-          try {
-            const x = onResolved(this.data);
-            resolvePromise(promise2, x, resolve, reject);
-          } catch (e) {
-            reject(e);
-          }
-        }, 0);
-      }
-
-      if (this.status === 'rejected') {
-        setTimeout(() => {
-          try {
-            const x = onRejected(this.data);
-            resolvePromise(promise2, x, resolve, reject);
-          } catch (e) {
-            reject(e);
-          }
-        }, 0);
-      }
-
-      if ((this.status = 'pending')) {
+      if ((this.status = PENDING)) {
         this.onResolvedCallback.push(() => {
           setTimeout(() => {
             try {
@@ -103,6 +81,28 @@ class MyPromise {
             }
           }, 0);
         });
+      }
+
+      if (this.status === FULFILLED) {
+        setTimeout(() => {
+          try {
+            const x = onResolved(this.data);
+            resolvePromise(promise2, x, resolve, reject);
+          } catch (e) {
+            reject(e);
+          }
+        }, 0);
+      }
+
+      if (this.status === REJECTED) {
+        setTimeout(() => {
+          try {
+            const x = onRejected(this.data);
+            resolvePromise(promise2, x, resolve, reject);
+          } catch (e) {
+            reject(e);
+          }
+        }, 0);
       }
     });
 
