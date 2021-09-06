@@ -1,0 +1,1 @@
+// refer: https://replit.com/@ZhangMYihua/N-Queens#main.js
