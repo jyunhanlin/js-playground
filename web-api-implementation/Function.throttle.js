@@ -20,3 +20,22 @@ function throttle(fn, delay) {
     }, delay);
   };
 }
+
+function throttle_swag(fn, delay) {
+  let lastTime = new Date().getTime();
+  let timer;
+
+  return function (...args) {
+    const now = new Date().getTime();
+
+    if (now - lastTime < delay) {
+      clearTimeout(timer);
+      timer = setTimeout(function () {
+        fn.apply(this, args);
+        lastTime = now;
+      }, delay - (now - lastTime));
+    } else {
+      fn.apply(this, args);
+    }
+  };
+}
