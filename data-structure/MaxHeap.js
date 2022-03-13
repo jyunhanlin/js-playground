@@ -2,7 +2,6 @@
 class MaxHeap {
   constructor() {
     this.values = [];
-    this._size = 0;
   }
 
   // index of the parent node
@@ -80,8 +79,6 @@ class MaxHeap {
     this.values.push(element);
     // move element up until it's in the correct position
     this.heapifyUp(this.values.length - 1);
-
-    this._size++;
   }
 
   // returns value of max without removing
@@ -100,7 +97,6 @@ class MaxHeap {
     this.values[0] = end;
     // heapify down until element is back in its correct position
     this.heapifyDown(0);
-    this._size--;
 
     // return the max
     return max;
@@ -108,7 +104,7 @@ class MaxHeap {
 
   buildHeap(array) {
     this.values = array;
-    this._size = array.length;
+
     // since leaves start at floor(nodes / 2) index, we work from the leaves up the heap
     for (let i = Math.floor(this.values.length / 2); i >= 0; i--) {
       this.heapifyDown(i);
@@ -116,7 +112,7 @@ class MaxHeap {
   }
 
   size() {
-    return this._size;
+    return this.values.length;
   }
 
   print() {
