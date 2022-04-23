@@ -41,3 +41,34 @@ var deleteDuplicates = function (head) {
 
   return result;
 };
+
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @return {ListNode}
+ */
+var deleteDuplicates = function (head) {
+  const dummyHead = { next: head };
+
+  let cur = dummyHead;
+
+  while (cur.next) {
+    if (cur.next.next && cur.next.val === cur.next.next.val) {
+      let node = cur.next.next.next;
+      while (node && cur.next.val === node.val) {
+        node = node.next;
+      }
+      cur.next = node;
+    } else {
+      cur = cur.next;
+    }
+  }
+
+  return dummyHead.next;
+};
