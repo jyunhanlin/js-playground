@@ -4,4 +4,6 @@ const flat = (arr) =>
   arr.reduce((acc, cur) => acc.concat(Array.isArray(cur) ? flat(cur) : cur), []);
 
 const flatMap = (arr, fn) =>
-  arr.reduce((acc, cur) => acc.concat(Array.isArray(cur) ? flat(cur) : cur), []).map(fn);
+  arr
+    .reduce((acc, cur) => acc.concat(Array.isArray(cur) ? flatMap(cur, (x) => x) : cur), [])
+    .map(fn);
