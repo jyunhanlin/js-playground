@@ -21,21 +21,24 @@ function throttle(fn, delay) {
   };
 }
 
-function throttle_swag(fn, delay) {
+function throttleWithLatestArgs(fn, delay) {
   let lastTime = new Date().getTime();
   let timer;
 
   return function (...args) {
     const now = new Date().getTime();
 
-    if (now - lastTime < delay) {
-      clearTimeout(timer);
+    if (!timer) lastTime = now;
+
+    if (delay > now - lastTime) {
+      if (timer) clearTimeout(timer);
       timer = setTimeout(function () {
         fn.apply(this, args);
-        lastTime = now;
       }, delay - (now - lastTime));
     } else {
+      if (timer) clearTimeout(timer);
       fn.apply(this, args);
     }
+    lastTime = now;
   };
 }
