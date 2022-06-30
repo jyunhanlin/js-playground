@@ -22,23 +22,16 @@ function throttle(fn, delay) {
 }
 
 function throttleWithLatestArgs(fn, delay) {
-  let lastTime = new Date().getTime();
+  let lastTime = Date.now();
   let timer;
 
   return function (...args) {
-    const now = new Date().getTime();
+    const now = Date.now();
 
-    if (!timer) lastTime = now;
-
-    if (delay > now - lastTime) {
-      if (timer) clearTimeout(timer);
-      timer = setTimeout(function () {
-        fn.apply(this, args);
-      }, delay - (now - lastTime));
-    } else {
-      if (timer) clearTimeout(timer);
+    if (timer) clearTimeout(timer);
+    timer = setTimeout(function () {
+      lastTime = now;
       fn.apply(this, args);
-    }
-    lastTime = now;
+    }, Math.max(0, delay - (now - lastTime)));
   };
 }
