@@ -61,25 +61,32 @@ MD5._startProcess = function () {
 };
 
 MD5._calculateMD5 = function (file) {
-  let md5;
+  const fileReader = new FileReader();
+  const chunkSize = 1048576; // 1048576 = 1MB
+  let chunks = Math.ceil(file.size / chunkSize);
+  let currentChunk = 0;
 
-  const calculate = (offset) => {
-    return new Promise((resolve, reject) => {
-      const currentChuckSize = Math.min(file.size - offset, this.chuckSize);
-      const chuck = file.slice(offset, currentChuckSize);
+  return new Promise((resolve) => {
+    fileReader.onload = function (e) {
+      md5.append(e.target.result);
+      currentChunk++;
 
-      md5 += new MD5(chuck);
-      if (currentChuckSize < this.chuckSize) {
-        resolve(md5);
-
-        this._dispatch('computed', { file, md5 });
+      if (currentChunk < chunks) {
+        this._dispatch('computed', { filename: file.name, currentChunk, chunks });
+        loadNext();
       } else {
-        resolve(calculate(offset + this.chuckSize));
+        resolve(md5.end());
       }
-    });
-  };
+    };
 
-  return calculate(0);
+    function loadNext() {
+      const start = currentChunk * chunkSize,
+        end = start + chunkSize >= file.size ? file.size : start + chunkSize;
+
+      fileReader.readAsArrayBuffer(file.slice(start, end));
+    }
+    loadNext();
+  });
 };
 
 // ----------------------------------------------------------------
