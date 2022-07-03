@@ -3,44 +3,33 @@
  * @return {number}
  */
 var getMaxLen = function (nums) {
-  let curr_len = 0,
-    curr_negative_count = 0,
-    max_len = 0;
-  let first_negative_index = -1,
-    last_negative_index = -1;
+  let maxLen = 0,
+    startNeg = -1,
+    startPos = -1,
+    running = 1;
 
-  for (let i = 0; i <= nums.length; i++) {
-    if (nums[i] === 0 || i === nums.length) {
-      // reset curr
-      if (curr_negative_count % 2 === 0) {
-        max_len = Math.max(curr_len, max_len);
-      } else {
-        max_len = Math.max(
-          max_len,
-          i - first_negative_index - 1,
-          curr_len - i + last_negative_index
-        );
-      }
+  for (let i = 0; i < nums.length; i++) {
+    const num = nums[i];
 
-      curr_len = 0;
-      curr_negative_count = 0;
-      first_negative_index = -1;
-      last_negative_index = -1;
+    if (!num) {
+      (startNeg = -1), (startPos = -1), (running = 1);
       continue;
     }
 
-    if (nums[i] < 0) {
-      if (first_negative_index === -1) {
-        first_negative_index = i;
-      }
-      last_negative_index = i;
-      curr_negative_count++;
-    }
+    running *= num;
 
-    curr_len++;
+    if (num < 0 && startNeg === -1) startNeg = i;
+    if (num > 0 && startPos === -1) startPos = i;
+
+    if (running > 0) {
+      maxLen = Math.max(
+        maxLen,
+        startPos === -1 ? -Infinity : i - startPos + 1,
+        startNeg === -1 ? -Infinity : i - startNeg + 1
+      );
+    } else if (startNeg !== -1) maxLen = Math.max(maxLen, i - startNeg);
   }
-
-  return max_len;
+  return maxLen;
 };
 
 // Brute force
