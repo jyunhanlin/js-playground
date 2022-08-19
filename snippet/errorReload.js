@@ -1,3 +1,5 @@
+// even change the domain when error happens
+
 window.addEventListener(
   'error',
   function (e) {
