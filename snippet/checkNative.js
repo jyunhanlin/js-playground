@@ -2,13 +2,15 @@
   const MSG = 'Watch out! something changed';
   const inBrowser = typeof window !== 'undefined';
 
+  const backupAPIs = ['Promise', 'Array', 'Date', 'Object', 'Number', 'String'];
+
   const {
     JSON: { parse, stringify },
     setTimeout,
     setInterval,
   } = global;
 
-  // store original to _snapshot
+  // direct invoke APIs, store original to _snapshot
   let _snapshots = {
     JSON: {
       parse,
@@ -26,13 +28,13 @@
     _snapshots.fetch = fetch;
   }
 
-  // store original to _prototypes
+  // APIS with prototype, store original to _prototypes
   let _prototypes = {};
-  const names = ['Promise', 'Array', 'Date', 'Object', 'Number', 'String'];
-  names.forEach((name) => {
-    let fns = Object.getOwnPropertyNames(global[name].prototype);
+
+  backupAPIs.forEach((api) => {
+    let fns = Object.getOwnPropertyNames(global[api].prototype);
     fns.forEach((fn) => {
-      _prototypes[`${name}.${fn}`] = global[name].prototype[fn];
+      _prototypes[`${api}.${fn}`] = global[api].prototype[fn];
     });
   });
 
@@ -62,14 +64,14 @@
       }
     }
 
-    names.forEach((name) => {
-      let fns = Object.getOwnPropertyNames(global[name].prototype);
+    backupAPIs.forEach((api) => {
+      let fns = Object.getOwnPropertyNames(global[api].prototype);
       fns.forEach((fn) => {
-        const isEqual = global[name].prototype[fn] === _prototypes[`${name}.${fn}`];
+        const isEqual = global[api].prototype[fn] === _prototypes[`${api}.${fn}`];
         if (!isEqual) {
-          console.log(`${name}.prototype.${fn}${MSG}`);
+          console.log(`${api}.prototype.${fn}${MSG}`);
           if (reset) {
-            global[name].prototype[fn] = _prototypes[`${name}.${fn}`];
+            global[api].prototype[fn] = _prototypes[`${api}.${fn}`];
           }
         }
       });
