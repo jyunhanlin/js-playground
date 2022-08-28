@@ -1,5 +1,6 @@
 // Takes a function following the common error-first callback style
 // i.e. taking an (err, value) => ... callback as the last argument, and returns a version that returns promises.
+
 function promisify(original) {
   function fn(...args) {
     return new Promise((resolve, reject) => {
