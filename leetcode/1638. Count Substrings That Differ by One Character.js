@@ -18,6 +18,7 @@ var countSubstrings = function (s, t) {
         dp1[i][j] = dp1[i - 1][j - 1] + 1;
         dp2[i][j] = dp2[i - 1][j - 1];
       } else {
+        dp1[i][j] = 0;
         dp2[i][j] = dp1[i - 1][j - 1] + 1;
       }
 
