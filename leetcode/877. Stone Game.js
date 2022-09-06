@@ -10,7 +10,7 @@ var stoneGame = function (piles) {
       if (j === i) {
         dp[i][i] = piles[i];
       } else {
-        dp[j][i] = Math.max(dp[j][i], piles[j] - dp[j + 1][i], piles[i] - dp[j][i - 1]);
+        dp[j][i] = Math.max(piles[j] - dp[j + 1][i], piles[i] - dp[j][i - 1]);
       }
     }
   }
