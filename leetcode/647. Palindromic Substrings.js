@@ -19,3 +19,30 @@ var countSubstrings = function (s) {
 
   return count;
 };
+
+/**
+ * @param {string} s
+ * @return {number}
+ */
+var countSubstrings = function (s) {
+  const mem = {};
+
+  const helper = (i, j) => {
+    if (i >= j) return 1;
+    if (mem[`${i}-${j}`]) return mem[`${i}-${j}`];
+
+    mem[`${i}-${j}`] = s[i] === s[j] ? helper(i + 1, j - 1) : 0;
+
+    return mem[`${i}-${j}`];
+  };
+
+  let count = 0;
+
+  for (let i = 0; i < s.length; i += 1) {
+    for (let j = i; j < s.length; j += 1) {
+      count += helper(i, j);
+    }
+  }
+
+  return count;
+};
