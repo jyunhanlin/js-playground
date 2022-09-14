@@ -70,4 +70,3 @@ class LRUObjectCache {
     return typeof cacheKey === 'string' || typeof cacheKey === 'number';
   }
 }
-Footer;
