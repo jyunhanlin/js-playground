@@ -3,8 +3,8 @@ class LRUMapCache {
     this._cache = new Map();
     this._cacheSize = cacheSize;
   }
-  set(key, selectorFn) {
-    this._cache.set(key, selectorFn);
+  set(key, value) {
+    this._cache.set(key, value);
 
     if (this._cache.size > this._cacheSize) {
       const earliest = this._cache.keys().next().value;
@@ -35,8 +35,8 @@ class LRUObjectCache {
     this._cacheOrdering = [];
     this._cacheSize = cacheSize;
   }
-  set(key, selectorFn) {
-    this._cache[key] = selectorFn;
+  set(key, value) {
+    this._cache[key] = value;
     this._registerCacheHit(key);
 
     if (this._cacheOrdering.length > this._cacheSize) {
