@@ -18,9 +18,9 @@ function debounce(fn, delay) {
   };
 }
 
-function debounce<Args extends unknown[]>(fn: (...args: Args) => void, delay: number) {
-  let timeoutID: number | undefined;
-  let lastArgs: Args | undefined;
+function debounce(fn, delay) {
+  let timeoutID;
+  let lastArgs;
 
   const run = () => {
     if (lastArgs) {
@@ -29,7 +29,7 @@ function debounce<Args extends unknown[]>(fn: (...args: Args) => void, delay: nu
     }
   };
 
-  const debounced = (...args: Args) => {
+  const debounced = (...args) => {
     clearTimeout(timeoutID);
     lastArgs = args;
     timeoutID = window.setTimeout(run, delay);
