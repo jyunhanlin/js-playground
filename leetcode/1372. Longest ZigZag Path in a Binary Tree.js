@@ -10,6 +10,8 @@
  * @param {TreeNode} root
  * @return {number}
  */
+
+// time expired
 var longestZigZag = function (root) {
   const maxZigZag = (node, direction, cur) => {
     if (node[direction]) {
@@ -35,4 +37,27 @@ var longestZigZag = function (root) {
   const right = maxZigZag(root, 'right', 0);
 
   return Math.max(left, right);
+};
+
+var longestZigZag = function (root) {
+  let max = 0;
+
+  const maxZigZag = (node, isLeft, cur) => {
+    if (!node) return;
+
+    max = Math.max(max, cur);
+
+    if (isLeft) {
+      maxZigZag(node.left, false, cur + 1);
+      maxZigZag(node.right, true, 1);
+    } else {
+      maxZigZag(node.right, true, cur + 1);
+      maxZigZag(node.left, false, 1);
+    }
+  };
+
+  maxZigZag(root, true, 0);
+  maxZigZag(root, false, 0);
+
+  return max;
 };
