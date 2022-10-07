@@ -9,7 +9,9 @@ const createStore = (initialState, actions) => {
   const subscribe = (subscriber) => {
     subscribers.push(subscriber);
 
-    return () => subscribers.splice(subscribers.indexOf(subscriber), 1);
+    const unsubscribe = () => subscribers.splice(subscribers.indexOf(subscriber), 1);
+
+    return unsubscribe;
   };
 
   const notify = (newState) => {
@@ -33,9 +35,11 @@ const useSelector = (store, selector) => {
   const [selectedValue, setSelectedValue] = useState(selector(store.state));
 
   useEffect(() => {
-    return store.subscribe((newState) => {
+    const unsubscribe = store.subscribe((newState) => {
       setSelectedValue(selector(newState));
     });
+
+    return unsubscribe;
   }, []);
 
   return selectedValue;
