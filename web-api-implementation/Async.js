@@ -17,3 +17,24 @@ generatorWrap(function* () {
   const result4 = yield promiseB(result3);
   yield done(result4);
 });
+
+function run(fn) {
+  const gen = fn();
+  let result = gen.next();
+
+  return new Promise((resolve, reject) => {
+    const next = (nextResult) => {
+      if (nextResult.done) resolve(nextResult.value);
+
+      nextResult.value
+        .then((res) => {
+          const newResult = gen.next(res);
+
+          next(newResult);
+        })
+        .catch(reject);
+    };
+
+    next(result);
+  });
+}
