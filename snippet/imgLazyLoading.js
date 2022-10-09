@@ -1,3 +1,6 @@
+// <img data-src="https://img1.src" ... />
+// <img data-src="https://img2.src" ... />
+
 const imgElList = document.querySelectorAll('img');
 
 const lazyLoad = () => {
@@ -14,5 +17,3 @@ const lazyLoad = () => {
     observer.observe(img);
   });
 };
-
-// <img data-src="" />
