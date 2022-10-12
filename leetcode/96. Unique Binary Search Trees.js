@@ -17,3 +17,24 @@ var numTrees = function (n) {
 
   return dp[n];
 };
+
+/**
+ * @param {number} n
+ * @return {number}
+ */
+var numTrees = function (n) {
+  const dp = new Array(n + 1).fill(0);
+
+  const builder = (num) => {
+    if (num <= 1) return 1;
+
+    if (dp[num]) return dp[num];
+
+    for (let i = 1; i <= num; i += 1) {
+      dp[num] += builder(i - 1) * builder(num - i);
+    }
+    return dp[num];
+  };
+
+  return builder(n);
+};
