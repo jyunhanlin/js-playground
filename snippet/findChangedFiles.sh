@@ -13,3 +13,16 @@ if [ -z "$CHANGED_FILES" ]; then
 else
   npm test -- --findRelatedTests $CHANGED_FILES
 fi
+
+
+touch test-log.txt 
+touch test-error.txt
+CHANGED_FILES="${{ steps.find-changed-files.outputs.changed_files }}"
+if [[ "$CHANGED_FILES" == *src* ]]; then
+  npm test -- --findRelatedTests $CHANGED_FILES > test-log.txt 2> test-error.txt || true
+fi
+
+TEST_LOG=`cat test-log.txt`
+if [[ -z "$TEST_LOG" ]] || [[ "$TEST_LOG" == *"No tests found"* ]]; then
+  echo -e 'No related tests found.' > test-log.txt
+fi
