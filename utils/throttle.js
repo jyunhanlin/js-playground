@@ -30,7 +30,7 @@ function throttleWithLatestArgs(fn, delay) {
 
     if (timer) clearTimeout(timer);
     timer = setTimeout(function () {
-      lastTime = Date.now();
+      lastTime = now;
       fn.apply(this, args);
     }, Math.max(0, delay - (now - lastTime)));
   };
