@@ -21,6 +21,28 @@ function throttle(fn, delay) {
   };
 }
 
+function throttle2(fn, delay, immedidate) {
+  let timer = true;
+
+  let fireImmediate = immedidate;
+
+  return function (...args) {
+    if (fireImmediate) {
+      fn.apply(this, args);
+      fireImmediate = false;
+      return;
+    }
+
+    if (!timer) return;
+
+    timer = false;
+    setTimeout(function () {
+      fn.apply(this, args);
+      timer = true;
+    }, delay);
+  };
+}
+
 function throttleWithLatestArgs(fn, delay) {
   let lastTime = Date.now();
   let timer;
