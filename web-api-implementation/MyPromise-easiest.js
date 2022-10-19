@@ -1,8 +1,3 @@
-/**
- * ref:
- * 1. https://juejin.cn/post/6844904094079926286
- */
-
 function MyPromise(executor) {
   this.cbs = [];
 
