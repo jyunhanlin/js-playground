@@ -1,4 +1,7 @@
-// not work
+// in older safari, Safari drop the Authorization header when following a same-origin redirect (fix in safari 15.4)
+// https://stackoverflow.com/questions/57974176/safari-does-not-persist-the-authorization-header-on-redirect
+//
+
 // Cannot get next URL for redirect="manual"
 fetch('/api/user/list', {
   headers: { Authorization: `Bearer xxxxxxxxx` },
