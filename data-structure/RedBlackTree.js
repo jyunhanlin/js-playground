@@ -42,6 +42,13 @@ class RedBlackTree {
     node.color = color;
   }
 
+  /**
+   *         node           ->           pr(r)
+   *        /   \           ->         /   \
+   *       pl   pr(r)       ->       node   cr
+   *           / \          ->       /  \
+   *          cl  cr        ->      pl   cl
+   */
   #leftRotate(node) {
     if (!node) return;
     const r = node.right;
@@ -55,6 +62,13 @@ class RedBlackTree {
     node.parent = r;
   }
 
+  /**
+   *           node         ->          pl(l)
+   *          /   \         ->        /   \
+   *         pl(l) pr       ->       cl   node
+   *        /  \            ->           / \
+   *       cl   cr          ->          cr  pr
+   */
   #rightRotate(node) {
     if (!node) return;
     const l = node.left;
