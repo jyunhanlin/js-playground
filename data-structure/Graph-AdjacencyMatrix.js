@@ -65,7 +65,7 @@ const directions = [
   [0, -1], //left
 ];
 
-const traversalDFS = function (matrix) {
+const traversalDFS2 = function (matrix) {
   const seen = new Array(matrix.length).fill(0).map(() => new Array(matrix[0].length).fill(false));
 
   const values = [];
@@ -88,4 +88,4 @@ const dfs = function (matrix, row, col, seen, values) {
   }
 };
 
-console.log(traversalDFS(testMatrix));
+console.log(traversalDFS2(testMatrix));
