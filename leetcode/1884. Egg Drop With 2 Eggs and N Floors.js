@@ -9,8 +9,11 @@ var twoEggDrop = function (n) {
     if (eggs == 1 || floors <= 1) return floors;
     if (dp[floors][eggs] > 0) return dp[floors][eggs];
     let min = Infinity;
-    for (let i = 1; i <= floors; i++)
-      min = Math.min(min, 1 + Math.max(drop(i - 1, eggs - 1, dp), drop(floors - i, eggs, dp)));
+    for (let i = 1; i <= floors; i++) {
+      // breaking egg: drop(i - 1, egg - 1)
+      // non breaking egg: drop(floor - i , egg) <-- Think the i floor become the 0 floor
+      min = Math.min(min, 1 + Math.max(drop(i - 1, eggs - 1), drop(floors - i, eggs)));
+    }
     dp[floors][eggs] = min;
     return min;
   };
