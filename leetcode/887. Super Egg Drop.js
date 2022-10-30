@@ -1,8 +1,9 @@
 /**
+ * @param {number} k
  * @param {number} n
  * @return {number}
  */
-var twoEggDrop = function (n) {
+var superEggDrop = function (k, n) {
   const dp = new Array(n + 1).fill(0).map(() => new Array(2).fill(0));
 
   const drop = (floors, eggs) => {
@@ -18,14 +19,15 @@ var twoEggDrop = function (n) {
     return min;
   };
 
-  return drop(n, 2);
+  return drop(n, k);
 };
 
 /**
+ * @param {number} k
  * @param {number} n
  * @return {number}
  */
-var twoEggDrop = function (n) {
+var superEggDrop = function (k, n) {
   const dp = new Array(n + 1).fill(0).map(() => new Array(2).fill(0));
 
   const drop = (floors, eggs) => {
@@ -55,5 +57,5 @@ var twoEggDrop = function (n) {
     return min;
   };
 
-  return drop(n, 2);
+  return drop(n, k);
 };
