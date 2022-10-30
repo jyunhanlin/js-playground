@@ -35,19 +35,19 @@ var superEggDrop = function (k, n) {
     if (dp[floors][eggs] > 0) return dp[floors][eggs];
 
     let min = Infinity;
-    let start = 1,
-      end = floors;
+    let left = 1,
+      right = floors;
 
-    while (start <= end) {
-      const mid = Math.floor((start + end) / 2);
+    while (left <= right) {
+      const mid = Math.floor((left + right) / 2);
       const broken = drop(mid - 1, eggs - 1);
       const nonBroken = drop(floors - mid, eggs);
 
       if (broken > nonBroken) {
-        end = mid - 1;
+        right = mid - 1;
         min = Math.min(min, broken + 1);
       } else {
-        start = mid + 1;
+        left = mid + 1;
         min = Math.min(min, nonBroken + 1);
       }
     }
