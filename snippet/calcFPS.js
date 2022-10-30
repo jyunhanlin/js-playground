@@ -1,4 +1,5 @@
-function calcFPS(fps) {
+// implement with setTimeout
+function calcFPS() {
   let tasks = [Date.now()];
   let startTime = Date.now();
 
@@ -19,6 +20,7 @@ function calcFPS(fps) {
   loop();
 }
 
+// implement  with requestAnimationFrame
 function calcFPS() {
   let tasks = [Date.now()];
   let startTime = Date.now();
