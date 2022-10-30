@@ -7,14 +7,14 @@ var twoEggDrop = function (n) {
 
   const drop = (floors) => {
     if (floors <= 1) return floors;
-    if (dp[floors] !== 0) return dp[floors];
+    if (dp[floors]) return dp[floors];
 
-    let res = Infinity;
+    dp[floors] = Infinity;
     for (let i = 1; i <= floors; i += 1) {
-      res = Math.min(res, Math.max(i - 1, drop(floors - i)) + 1);
+      // egg broken -> go through all i - 1 floors
+      // egg not broken -> recursive drop(n - i) <-- think i as 0 floor
+      dp[floors] = Math.min(dp[floors], Math.max(i - 1, drop(floors - i)) + 1);
     }
-
-    dp[floors] = res;
 
     return dp[floors];
   };
