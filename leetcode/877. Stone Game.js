@@ -17,6 +17,31 @@ var stoneGame = function (piles) {
   return dp[0][n - 1] > 0;
 };
 
+// dp[i][j] means the biggest number of stones you can get more than opponent picking piles in piles[i] ~ piles[j].
+// You can first pick piles[i] or piles[j].
+
+// If you pick piles[i], your result will be piles[i] - dp[i + 1][j]
+// If you pick piles[j], your result will be piles[j] - dp[i][j - 1]
+// So we get:
+// dp[i][j] = max(piles[i] - dp[i + 1][j], piles[j] - dp[i][j - 1])
+
+/**
+ * @param {number[]} piles
+ * @return {boolean}
+ */
+var stoneGame = function (piles) {
+  const n = piles.length;
+  const dp = new Array(n).fill().map(() => new Array(n).fill(0));
+
+  for (let i = 0; i < n; i += 1) dp[i][i] = piles[i];
+
+  for (let d = 1; d < n; d += 1)
+    for (let i = 0; i < n - d; i += 1)
+      dp[i][i + d] = Math.max(piles[i] - dp[i + 1][i + d], piles[i + d] - dp[i][i + d - 1]);
+
+  return dp[0][n - 1] > 0;
+};
+
 /**
  * @param {number[]} piles
  * @return {boolean}
