@@ -1,11 +1,3 @@
-/**
- * ref:
- * 1. https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
- * 2. https://segmentfault.com/a/1190000039699000
- * 3. https://juejin.cn/post/6850037281206566919
- *
- */
-
 const PENDING = 'pending';
 const FULFILLED = 'fulfilled';
 const REJECTED = 'rejected';
