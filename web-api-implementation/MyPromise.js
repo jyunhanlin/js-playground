@@ -100,6 +100,135 @@ class MyPromise {
 
     return promise2;
   }
+
+  catch(onRejected) {
+    return this.then(undefined, onRejected);
+  }
+
+  finally(callBack) {
+    return this.then(callBack, callBack);
+  }
+
+  static resolve(value) {
+    if (value instanceof MyPromise) {
+      return value;
+    } else if (value instanceof Object && 'then' in value) {
+      return new MyPromise((resolve, reject) => {
+        value.then(resolve, reject);
+      });
+    }
+
+    return new MyPromise((resolve) => {
+      resolve(value);
+    });
+  }
+
+  static reject(reason) {
+    return new MyPromise((resolve, reject) => {
+      reject(reason);
+    });
+  }
+
+  static all(promises) {
+    return new MyPromise((resolve, reject) => {
+      if (Array.isArray(promises)) {
+        let result = [];
+        let count = 0;
+
+        if (promises.length === 0) {
+          return resolve(promises);
+        }
+
+        promises.forEach((item, index) => {
+          if (item instanceof MyPromise) {
+            MyPromise.resolve(item).then(
+              (value) => {
+                count++;
+
+                result[index] = value;
+
+                count === promises.length && resolve(result);
+              },
+              (reason) => {
+                reject(reason);
+              }
+            );
+          } else {
+            count++;
+            result[index] = item;
+            count === promises.length && resolve(result);
+          }
+        });
+      } else {
+        return reject(new TypeError('Argument is not iterable'));
+      }
+    });
+  }
+
+  static allSettled(promises) {
+    return new MyPromise((resolve, reject) => {
+      if (Array.isArray(promises)) {
+        let result = [];
+        let count = 0;
+
+        if (promises.length === 0) return resolve(promises);
+
+        promises.forEach((item, index) => {
+          MyPromise.resolve(item).then(
+            (value) => {
+              count++;
+
+              result[index] = {
+                status: 'fulfilled',
+                value,
+              };
+
+              count === promises.length && resolve(result);
+            },
+            (reason) => {
+              count++;
+
+              result[index] = {
+                status: 'rejected',
+                reason,
+              };
+
+              count === promises.length && resolve(result);
+            }
+          );
+        });
+      } else {
+        return reject(new TypeError('Argument is not iterable'));
+      }
+    });
+  }
+
+  static any(promises) {
+    return new MyPromise((resolve, reject) => {
+      if (Array.isArray(promises)) {
+        let errors = [];
+        let count = 0;
+
+        if (promises.length === 0) return reject(new AggregateError('All promises were rejected'));
+
+        promises.forEach((item) => {
+          MyPromise.resolve(item).then(
+            (value) => {
+              resolve(value);
+            },
+            (reason) => {
+              count++;
+              errors.push(reason);
+
+              count === promises.length && reject(new AggregateError(errors));
+            }
+          );
+        });
+      } else {
+        return reject(new TypeError('Argument is not iterable'));
+      }
+    });
+  }
 }
 
 const resolvePromise = (promise2, x, resolve, reject) => {
