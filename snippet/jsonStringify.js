@@ -92,3 +92,17 @@ let person = Object.create(null, {
 
 console.log(JSON.stringify(person));
 // {"age":"25"}
+
+// ------
+import { parse, stringify } from 'lossless-json';
+
+const text = '{"decimal":2.370,"long":9123372036854000123,"big":2.3e+500}';
+
+// JSON.parse will lose some digits and a whole number:
+console.log(JSON.stringify(JSON.parse(text)));
+// '{"decimal":2.37,"long":9123372036854000000,"big":null}'
+// WHOOPS!!!
+
+// LosslessJSON.parse will preserve all numbers and even the formatting:
+console.log(stringify(parse(text)));
+// '{"decimal":2.370,"long":9123372036854000123,"big":2.3e+500}'
