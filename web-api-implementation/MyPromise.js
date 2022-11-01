@@ -229,6 +229,20 @@ class MyPromise {
       }
     });
   }
+
+  static race(promises) {
+    return new myPromise((resolve, reject) => {
+      if (Array.isArray(promises)) {
+        if (promises.length > 0) {
+          promises.forEach((item) => {
+            myPromise.resolve(item).then(resolve, reject);
+          });
+        }
+      } else {
+        return reject(new TypeError('Argument is not iterable'));
+      }
+    });
+  }
 }
 
 const resolvePromise = (promise2, x, resolve, reject) => {
