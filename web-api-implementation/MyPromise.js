@@ -231,11 +231,11 @@ class MyPromise {
   }
 
   static race(promises) {
-    return new myPromise((resolve, reject) => {
+    return new MyPromise((resolve, reject) => {
       if (Array.isArray(promises)) {
         if (promises.length > 0) {
           promises.forEach((item) => {
-            myPromise.resolve(item).then(resolve, reject);
+            MyPromise.resolve(item).then(resolve, reject);
           });
         }
       } else {
