@@ -27,3 +27,28 @@ const Input = (props) => {
     />
   );
 };
+
+function usePropsValue(options) {
+  const { value, defaultValue, onChange } = options;
+
+  const [_, setFlag] = useState({});
+
+  const update = () => {
+    setFlag({});
+  };
+
+  const stateRef = useRef(value !== undefined ? value : defaultValue);
+  if (value !== undefined) {
+    stateRef.current = value;
+  }
+
+  const setState = (v, forceTrigger = false) => {
+    // `forceTrigger` means trigger `onChange` even if `v` is the same as `stateRef.current`
+    const nextValue = typeof v === 'function' ? v(stateRef.current) : v;
+    if (!forceTrigger && nextValue === stateRef.current) return;
+    stateRef.current = nextValue;
+    update();
+    onChange?.(nextValue);
+  };
+  return [stateRef.current, setState];
+}
