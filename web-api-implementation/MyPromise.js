@@ -287,3 +287,15 @@ const resolvePromise = (promise2, x, resolve, reject) => {
     resolve(x);
   }
 };
+
+// for promises-aplus-test
+MyPromise.deferred = function () {
+  let result = {};
+  result.promise = new MyPromise((resolve, reject) => {
+    result.resolve = resolve;
+    result.reject = reject;
+  });
+  return result;
+};
+
+module.exports = MyPromise;
