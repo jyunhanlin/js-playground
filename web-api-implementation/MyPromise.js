@@ -170,7 +170,7 @@ class MyPromise {
               count++;
 
               result[index] = {
-                status: 'fulfilled',
+                status: FULFILLED,
                 value,
               };
 
@@ -180,7 +180,7 @@ class MyPromise {
               count++;
 
               result[index] = {
-                status: 'rejected',
+                status: REJECTED,
                 reason,
               };
 
