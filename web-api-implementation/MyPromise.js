@@ -131,24 +131,18 @@ class MyPromise {
         }
 
         promises.forEach((item, index) => {
-          if (item instanceof MyPromise) {
-            MyPromise.resolve(item).then(
-              (value) => {
-                count++;
+          MyPromise.resolve(item).then(
+            (value) => {
+              count++;
 
-                result[index] = value;
+              result[index] = value;
 
-                count === promises.length && resolve(result);
-              },
-              (reason) => {
-                reject(reason);
-              }
-            );
-          } else {
-            count++;
-            result[index] = item;
-            count === promises.length && resolve(result);
-          }
+              count === promises.length && resolve(result);
+            },
+            (reason) => {
+              reject(reason);
+            }
+          );
         });
       } else {
         return reject(new TypeError('Argument is not iterable'));
