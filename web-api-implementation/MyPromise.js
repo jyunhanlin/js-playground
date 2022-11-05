@@ -22,7 +22,7 @@ class MyPromise {
     const reject = (error) => {
       if (this.status === PENDING) {
         this.status = REJECTED;
-        this.reason = error;
+        this.data = error;
         this.onRejectedCallbacks.forEach((cb) => cb(error));
       }
     };
@@ -48,9 +48,7 @@ class MyPromise {
             throw e;
           };
 
-    let promise2;
-
-    promise2 = new MyPromise((resolve, reject) => {
+    let promise2 = new MyPromise((resolve, reject) => {
       if ((this.status = PENDING)) {
         this.onResolvedCallback.push(() => {
           setTimeout(() => {
@@ -257,8 +255,10 @@ const resolvePromise = (promise2, x, resolve, reject) => {
       x.then(function (value) {
         resolvePromise(promise2, value, resolve, reject);
       }, reject);
-    } else {
-      x.then(resolve, reject);
+    } else if (x.status === FULFILLED) {
+      resolve(x.data);
+    } else if (x.status === REJECTED) {
+      reject(x.data);
     }
     return;
   }
