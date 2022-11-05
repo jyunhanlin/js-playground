@@ -234,15 +234,6 @@ class MyPromise {
       }
     });
   }
-
-  static deferred() {
-    let result = {};
-    result.promise = new MyPromise((resolve, reject) => {
-      result.resolve = resolve;
-      result.reject = reject;
-    });
-    return result;
-  }
 }
 
 const resolvePromise = (promise2, x, resolve, reject) => {
