@@ -50,7 +50,7 @@ class MyPromise {
 
     let promise2;
 
-    promise2 = new Promise((resolve, reject) => {
+    promise2 = new MyPromise((resolve, reject) => {
       if ((this.status = PENDING)) {
         this.onResolvedCallback.push(() => {
           setTimeout(() => {
