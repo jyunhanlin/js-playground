@@ -31,7 +31,7 @@ class RedBlackNode {
 class RedBlackTree {
   constructor(list) {
     this.root = null;
-    if (Object.prototype.toString.call(list) === '[object Array]') {
+    if (Array.isArray(list)) {
       list.forEach((v) => {
         this.insert(v);
       });
@@ -43,6 +43,8 @@ class RedBlackTree {
   }
 
   /**
+   *  node is the rotation point
+   *
    *         node           ->           pr(r)
    *        /   \           ->         /   \
    *       pl   pr(r)       ->       node   cr
@@ -51,13 +53,18 @@ class RedBlackTree {
    */
   #leftRotate(node) {
     if (!node) return;
-    const r = node.right;
-    node.right = r.left;
+
+    const r = node.right; // pr(r)
+    node.right = r.left; // cl
     if (r.left !== null) r.left.parent = node;
+
     r.parent = node.parent;
-    if (node.parent === null) this.root = r;
-    else if (node.parent.left === node) node.parent.left = r;
-    else if (node.parent.right === node) node.parent.right = r;
+
+    if (node.parent === null) this.root = r; // if node.parent is root
+    else if (node.parent.left === node)
+      node.parent.left = r; // reconnect the current parent's left childe
+    else if (node.parent.right === node) node.parent.right = r; // reconnect the current parent's right childe
+
     r.left = node;
     node.parent = r;
   }
@@ -71,32 +78,41 @@ class RedBlackTree {
    */
   #rightRotate(node) {
     if (!node) return;
-    const l = node.left;
-    node.left = l.right;
+
+    const l = node.left; // pl(l)
+    node.left = l.right; // cr
     if (l.right !== null) l.right.parent = node;
+
     l.parent = node.parent;
+
     if (node.parent === null) this.root = l;
     else if (node.parent.left === node) node.parent.left = l;
     else if (node.parent.right === node) node.parent.left = r;
+
     l.right = node;
     node.parent = l;
   }
 
   insert(val) {
     let t = this.root;
+    // there is no root
     if (t === null) {
       this.root = new RedBlackNode(val, null, null, null, BLACK);
       return this.root;
     }
 
+    // find the insert point
     let parent = t.parent;
     do {
       parent = t;
-      let cmp = val - t.val;
-      if (cmp > 0) t = t.right;
-      else t = t.left;
-    } while (t !== null);
 
+      const cmp = val - t.val;
+      if (cmp > 0) t = t.right;
+      else if (cmp < 0) t = t.left;
+      else throw new Error('insert value already exists');
+    } while (t);
+
+    // create the node
     const newNode = new RedBlackNode(val, parent);
     if (newNode.val > parent.val) parent.right = newNode;
     else parent.left = newNode;
@@ -108,7 +124,8 @@ class RedBlackTree {
   #fixAfterInsertNode(node) {
     node.color = RED;
 
-    while (node !== null && node !== this.root && node.parent.color === RED) {
+    while (node && node !== this.root && node.parent.color === RED) {
+      // the parent of node is the left child of grandparent
       if (this.#getParent(node) === this.#getLeft(this.#getParent(this.#getParent(node)))) {
         let uncle = this.#getRight(this.#getParent(this.#getParent(node)));
 
@@ -133,6 +150,7 @@ class RedBlackTree {
 
           this.#rightRotate(grandpa);
         }
+        // the parent of node is the right child of grandparent
       } else {
         let uncle = this.#getLeft(this.#getParent(this.#getParent(node)));
 
@@ -179,58 +197,58 @@ class RedBlackTree {
     return node === null ? BLACK : node.color;
   }
 
-  findNode(val) {
-    let p = this.root;
-    while (p) {
-      if (val < p.val) {
-        p = p.left;
-      } else if (val > p.val) {
-        p = p.right;
-      } else {
-        break;
-      }
-    }
-    return p;
-  }
-
+  // find the value of some node is smaller than the current node
   predecessor(node) {
     if (!node) return null;
-    else if (node.left) {
+
+    if (node.left) {
       let p = node.left;
       while (p.right) {
         p = p.right;
       }
       return p;
-    } else {
-      let p = node.parent;
-      let c = node;
-      while (p.left === c && p) {
-        c = p;
-        p = p.parent;
-        return p;
-      }
-      return null;
     }
+
+    let p = node.parent;
+    let c = node;
+    while (p.left === c && p) {
+      c = p;
+      p = p.parent;
+      return p;
+    }
+    return null;
   }
 
+  // find the value of some node is bigger than the current node
   successor(node) {
     if (!node) return null;
-    else if (node.right) {
+
+    if (node.right) {
       let p = node.right;
       while (p.left) {
         p = p.left;
       }
       return p;
-    } else {
-      let p = node.parent;
-      let c = node;
-      while (p.right === c && p) {
-        c = p;
-        p = p.parent;
-        return p;
-      }
-      return null;
     }
+
+    let p = node.parent;
+    let c = node;
+    while (p.right === c && p) {
+      c = p;
+      p = p.parent;
+      return p;
+    }
+    return null;
+  }
+
+  findNode(val) {
+    let p = this.root;
+    while (p) {
+      if (val < p.val) p = p.left;
+      else if (val > p.val) p = p.right;
+      else return p;
+    }
+    return null;
   }
 
   remove(val) {
@@ -248,46 +266,30 @@ class RedBlackTree {
       node = successor;
     }
 
-    if (node.parent === null) {
-      this.root = null;
-    }
+    if (node.parent === null) this.root = null;
 
     let replacement = node.left ? node.left : node.right;
     if (replacement) {
       replacement.parent = node.parent;
 
-      if (node.parent.left === node) {
-        node.parent.left = replacement;
-      } else {
-        node.parent.right = replacement;
-      }
+      if (node.parent.left === node) node.parent.left = replacement;
+      else node.parent.right = replacement;
 
       node.left = null;
       node.right = null;
       node.parent = null;
 
-      if (this.#getColor(node) === BLACK) {
-        this.#fixAfterDeleteNode(replacement);
-      }
+      if (this.#getColor(node) === BLACK) this.#fixAfterDeleteNode(replacement);
     } else {
-      if (this.#getColor(node) === BLACK) {
-        this.#fixAfterDeleteNode(node);
-      }
+      if (this.#getColor(node) === BLACK) this.#fixAfterDeleteNode(node);
 
-      if (node.parent.left === node) {
-        node.parent.left = null;
-      } else if (node.parent.right === node) {
-        node.parent.right = null;
-      }
+      if (node.parent.left === node) node.parent.left = null;
+      else if (node.parent.right === node) node.parent.right = null;
 
       node.parent = null;
     }
   }
-  /**
-   * 删除时调整树结构
-   * @author ywanzhou
-   * @param {RedBlackNode} x
-   */
+
   #fixAfterDeleteNode(x) {
     while (x !== this.root && this.#getColor(x) === BLACK) {
       if (x === this.#getLeft(this.#getParent(x))) {
