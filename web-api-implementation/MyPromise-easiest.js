@@ -2,18 +2,20 @@ function MyPromise(executor) {
   this.cbs = [];
 
   const resolve = (value) => {
-    this.data = value;
-    this.cbs.forEach((cb) => cb(value));
+    setTimeout(() => {
+      this.data = value;
+      this.cbs.forEach((cb) => cb(value));
+    }, 0);
   };
 
   executor(resolve);
 }
 
-MyPromise.prototype.then = function (onResolved) {
+MyPromise.prototype.then = function (onFulfilled) {
   return new MyPromise((resolve) => {
     this.cbs.push(() => {
       setTimeout(() => {
-        const res = onResolved(this.data);
+        const res = onFulfilled(this.data);
         if (res instanceof MyPromise) {
           res.then(resolve);
         } else {
