@@ -123,7 +123,7 @@ class MyPromise {
   static all(promises) {
     return new MyPromise((resolve, reject) => {
       if (Array.isArray(promises)) {
-        let result = [];
+        const result = [];
         let count = 0;
 
         if (promises.length === 0) {
@@ -153,7 +153,7 @@ class MyPromise {
   static allSettled(promises) {
     return new MyPromise((resolve, reject) => {
       if (Array.isArray(promises)) {
-        let result = [];
+        const result = [];
         let count = 0;
 
         if (promises.length === 0) return resolve(promises);
@@ -191,7 +191,7 @@ class MyPromise {
   static any(promises) {
     return new MyPromise((resolve, reject) => {
       if (Array.isArray(promises)) {
-        let errors = [];
+        const errors = [];
         let count = 0;
 
         if (promises.length === 0) return reject(new AggregateError('All promises were rejected'));
