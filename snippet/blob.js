@@ -26,10 +26,14 @@ const base64ToBlob = (base64Data, contentType, sliceSize) => {
 // 4. blob -> ArrayBuffer
 const blobToArrayBuffer = (blob) =>
   new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = reject;
-    reader.readAsArrayBuffer(blob);
+    if (blob.arrayBuffer) {
+      resolve(blob.arrayBuffer());
+    } else {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsArrayBuffer(blob);
+    }
   });
 
 // 5. blob -> base64
