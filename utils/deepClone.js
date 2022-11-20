@@ -1,5 +1,3 @@
-// ref: https://www.cnblogs.com/MomentYY/p/16126868.html
-
 // Easy
 // drawbacks: function, undefined, Symbol can not be cloned
 JSON.stringify();
