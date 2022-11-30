@@ -24,7 +24,7 @@ function mousePosition(event) {
 // 螢幕分辨率的高： window.screen.height
 // 螢幕分辨率的寬： window.screen.width
 // 螢幕可用工作區高度： window.screen.availHeight
-// 螢幕可用工作區寬度： window.screen.availWidt
+// 螢幕可用工作區寬度： window.screen.availWidth
 
 // get the current scroll position
 let scrollOffset = window.scrollY || document.documentElement.scrollTop;
