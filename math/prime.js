@@ -20,14 +20,10 @@ const nthPrime = (n) => {
             count++;
             if (count === n) {
               resolve(curPrime);
-            } else {
-              curPrime++;
-              calc();
             }
-          } else {
-            curPrime++;
-            calc();
           }
+          curPrime++;
+          calc();
         });
       };
 
@@ -42,29 +38,27 @@ const nthPrimeWithRAF = (n) => {
     else {
       let count = primeArr.length;
       let curPrime = primeArr[primeArr.length - 1];
+      let reqId;
 
       const calc = (taskStartTime) => {
         let taskFinishTime;
         do {
           if (isPrime(curPrime)) {
-            primeArr.push(curPrime);
+            if (!primeArr.includes(curPrime)) primeArr.push(curPrime);
             count++;
-            if (count === n) {
+            if (count === n || count > n) {
+              cancelAnimationFrame(reqId);
               resolve(curPrime);
-            } else {
-              curPrime++;
-              requestAnimationFrame(calc);
+              return;
             }
-          } else {
-            curPrime++;
-            requestAnimationFrame(calc);
           }
-
+          curPrime++;
           taskFinishTime = window.performance.now();
+          reqId = requestAnimationFrame(calc);
         } while (taskFinishTime - taskStartTime < 3);
       };
 
-      requestAnimationFrame(calc);
+      reqId = requestAnimationFrame(calc);
     }
   });
 };
