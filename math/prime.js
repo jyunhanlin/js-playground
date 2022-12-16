@@ -136,7 +136,7 @@ function* nthPrimeGen(n = 1) {
   }
 }
 
-const primes = (num) => {
+const primesUp = (num) => {
   let arr = Array.from({ length: num - 1 }).map((x, i) => i + 2),
     sqroot = Math.floor(Math.sqrt(num)),
     numsTillSqroot = Array.from({ length: sqroot - 1 }).map((x, i) => i + 2);
@@ -144,4 +144,4 @@ const primes = (num) => {
   return arr;
 };
 
-primes(10); // [2, 3, 5, 7]
+primesUp(10); // [2, 3, 5, 7]
