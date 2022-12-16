@@ -63,6 +63,41 @@ const nthPrimeWithRAF = (n) => {
   });
 };
 
+const nthPrimeWithMessageChannel = (n) => {
+  return new Promise((resolve) => {
+    if (primeArr[n - 1]) resolve(primeArr[n - 1]);
+    else {
+      let count = primeArr.length;
+      let curPrime = primeArr[primeArr.length - 1];
+
+      const calc = () => {
+        const taskStartTime = window.performance.now();
+        let taskFinishTime;
+        do {
+          if (isPrime(curPrime)) {
+            if (!primeArr.includes(curPrime)) primeArr.push(curPrime);
+            count++;
+            if (count === n || count > n) {
+              resolve(curPrime);
+              return;
+            }
+          }
+          curPrime++;
+          taskFinishTime = window.performance.now();
+        } while (taskFinishTime - taskStartTime < 3);
+
+        nextTask();
+      };
+
+      const channel = new MessageChannel();
+      const port = channel.port2;
+      channel.port1.onmessage = calc;
+      const nextTask = () => port.postMessage(null);
+      nextTask();
+    }
+  });
+};
+
 // nthPrime (generator version)
 const primeMap = [2];
 function* nthPrimeGen(n = 1) {
