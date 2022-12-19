@@ -4,7 +4,7 @@ const isPrime = (num) => {
   return num > 1;
 };
 
-// nthPrime (do not block the main thread)
+// nthPrime with setTimeout (but setTimeout has min 4s delay)
 const primeArr = [2];
 const nthPrime = (n) => {
   return new Promise((resolve) => {
@@ -32,6 +32,7 @@ const nthPrime = (n) => {
   });
 };
 
+// nthPrime with requestAnimationFrame
 const nthPrimeWithRAF = (n) => {
   return new Promise((resolve) => {
     if (primeArr[n - 1]) resolve(primeArr[n - 1]);
@@ -63,6 +64,7 @@ const nthPrimeWithRAF = (n) => {
   });
 };
 
+// nthPrime with MessageChannel (like scheduler from react)
 const nthPrimeWithMessageChannel = (n) => {
   return new Promise((resolve) => {
     if (primeArr[n - 1]) resolve(primeArr[n - 1]);
