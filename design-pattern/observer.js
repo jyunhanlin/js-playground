@@ -1,3 +1,5 @@
+// 主觀驅動
+
 class Observable {
   constructor() {
     this.observerList = [];

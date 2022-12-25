@@ -2,6 +2,7 @@
 // When need an implementation of a factory to be more dynamic
 // Expected to enable developers to extend functionality
 // （可以動態的增加或修改factory的內容）
+// 多套方案
 
 function Car(options) {}
 function Truck(options) {}
