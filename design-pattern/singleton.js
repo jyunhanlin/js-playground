@@ -1,3 +1,7 @@
+// Creational Design Patterns
+
+// Singleton: 專注
+
 // ## 什麼是singleton？singleton的目的是？
 // 保證一個類別只會有一個實體
 // 目的是需要一個物件來管理整個系統的操作

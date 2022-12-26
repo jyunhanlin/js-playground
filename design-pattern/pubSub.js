@@ -1,3 +1,5 @@
+// Behavioral Design Patterns
+
 class EventEmitter {
   constructor() {
     this.events = {};

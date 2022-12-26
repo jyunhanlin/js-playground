@@ -1,10 +1,13 @@
+// Creational Design Patterns
+
+// Factory: 抽象思考
+
 // ## 什麼是Factory？目的？
 // From wiki
 // it doesn’t explicitly require us to use a constructor.
 // Instead, a Factory can provide a generic interface for creating objects,
 // where we can specify the type of factory object we wish to be created.
 // （使用工廠模式來產生instance，可以根據不同的input產生不一樣的instance，也可以隱藏一些複雜的過程）
-// 抽象思考
 
 // ## 什麼樣的場景可以使用Factory？
 // When our object or component setup involves a high level of complexity

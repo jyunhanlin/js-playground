@@ -1,4 +1,6 @@
-// 主觀驅動
+// Behavioral Design Patterns
+
+// Observer: 主觀驅動
 
 class Observable {
   constructor() {
