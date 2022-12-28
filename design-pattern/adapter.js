@@ -3,6 +3,11 @@
 // Adapter 適應能力
 
 // 結合原本的能力，並應用新的API服務
+// The Adapter Pattern tries to solve the problem of making two (or more) incompatible classes compatible,
+// by using an intermediate class that implements a predefined interface.
+
+// The Adapter pattern is useful when you have existing code, be it third party, or in-house,
+// but out of your control, or otherwise not changeable to quite meet the interface you need it to.
 
 class AdapterA {
   constructor() {
