@@ -2,6 +2,8 @@
 
 // Facade 深入淺出
 
+// 提供一個統一的API，API內則是包含了多種不同的實作
+
 var Mortgage = function (name) {
   this.name = name;
 };
