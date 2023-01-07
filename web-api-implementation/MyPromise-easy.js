@@ -12,17 +12,21 @@ class Promise {
 
     const resolve = (value) => {
       if (this.status === PENDING) {
-        this.status = FULFILLED;
-        this.value = value;
-        this.onResolvedCallbacks.forEach((fn) => fn());
+        setTimeout(() => {
+          this.status = FULFILLED;
+          this.value = value;
+          this.onResolvedCallbacks.forEach((fn) => fn());
+        });
       }
     };
 
     const reject = (reason) => {
       if (this.status === PENDING) {
-        this.status = REJECTED;
-        this.reason = reason;
-        this.onRejectedCallbacks.forEach((fn) => fn());
+        setTimeout(() => {
+          this.status = REJECTED;
+          this.reason = reason;
+          this.onRejectedCallbacks.forEach((fn) => fn());
+        });
       }
     };
 
