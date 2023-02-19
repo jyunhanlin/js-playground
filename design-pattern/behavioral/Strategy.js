@@ -29,4 +29,6 @@ function premiumPattern(amount) {
   return amount * 0.8;
 }
 
-export { ShoppingCart, guestPattern, regularPattern, premiumPattern };
+const guestCart = new ShoppingCart(guestPattern);
+const regularCart = new ShoppingCart(regularPattern);
+const premiumCart = new ShoppingCart(premiumPattern);
