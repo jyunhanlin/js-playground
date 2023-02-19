@@ -36,3 +36,26 @@ var lastStoneWeightII = function (stones) {
 
   return result;
 };
+
+var lastStoneWeightII = function (stones) {
+  const dp = new Map();
+
+  const helper = (nums, x) => {
+    if (nums.length <= 0) return x;
+    const key = `${nums.length}-${x}`;
+
+    if (!dp.has(key)) {
+      dp.set(
+        key,
+        Math.min(
+          Math.abs(helper(nums.slice(1), x + nums[0])),
+          Math.abs(helper(nums.slice(1), x - nums[0]))
+        )
+      );
+    }
+
+    return dp.get(key);
+  };
+
+  return helper(stones, 0);
+};
