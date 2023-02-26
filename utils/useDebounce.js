@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import debounce from '../utils/debounce';
+import debounce from './debounce';
 
 function useDebounceFn(fn, options) {
   return useCallback(debounce(fn, options.wait), []);
@@ -33,4 +33,4 @@ function useDebounceEffect(effect, options, deps) {
   useEffect(effect, [debounced]);
 }
 
-export { useDebounceFn, useDebounce, useDebounce };
+export { useDebounceFn, useDebounce, useDebounceEffect };
