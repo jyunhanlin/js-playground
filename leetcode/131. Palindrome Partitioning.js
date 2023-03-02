@@ -17,16 +17,16 @@ var partition = function (s) {
     return true;
   };
 
-  const helper = (startingIdx, S, partialSplits) => {
-    if (startingIdx === S.length) {
+  const helper = (startingIdx, curStr, partialSplits) => {
+    if (startingIdx === curStr.length) {
       res.push([...partialSplits]);
     } else {
-      for (let i = startingIdx; i < S.length; i += 1) {
-        if (isPalindrome(startingIdx, i, S)) {
-          const palindromeSnippet = S.slice(startingIdx, i + 1);
+      for (let i = startingIdx; i < curStr.length; i += 1) {
+        if (isPalindrome(startingIdx, i)) {
+          const palindromeSnippet = curStr.slice(startingIdx, i + 1);
           partialSplits.push(palindromeSnippet);
 
-          helper(i + 1, S, partialSplits);
+          helper(i + 1, curStr, partialSplits);
           partialSplits.pop();
         }
       }
