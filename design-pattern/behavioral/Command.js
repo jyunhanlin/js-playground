@@ -1,6 +1,6 @@
 // Behavioral Design Patterns
 
-// Command
+// Command 將一系列的行為或請求封裝成Command
 
 function add(x, y) {
   return x + y;
