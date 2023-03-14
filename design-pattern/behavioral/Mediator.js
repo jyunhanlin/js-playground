@@ -1,6 +1,6 @@
 // Behavioral Design Patterns
 
-// Mediator 協調
+// Mediator 協調 ex:尋求PM協調出相關人力
 
 class TrafficTower {
   constructor() {
