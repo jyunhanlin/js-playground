@@ -1,6 +1,6 @@
 // Behavioral Design Patterns
 
-// Mementos
+// Mementos cache
 
 var Person = function (name, street, city, state) {
   this.name = name;
