@@ -1,6 +1,6 @@
 // Behavioral Design Patterns
 
-// Observer: 主觀驅動
+// Observer 主動通知相關的 deps
 
 class Observable {
   constructor() {
