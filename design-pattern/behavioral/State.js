@@ -1,6 +1,6 @@
 // Behavioral Design Patterns
 
-// State
+// State, state machine
 
 var TrafficLight = function () {
   var count = 0;
