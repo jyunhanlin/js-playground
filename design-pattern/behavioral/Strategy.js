@@ -1,6 +1,6 @@
 // Behavioral Design Patterns
 
-// Strategy 策略
+// Strategy 策略, 提供不同的策略，給使用者在某些情況下決定
 
 class ShoppingCart {
   constructor(discount) {
