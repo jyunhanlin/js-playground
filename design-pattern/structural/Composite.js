@@ -1,8 +1,7 @@
 // Structural Design Patterns
 
-// Composite 遞迴
+// Composite
 
-//Equipment
 class Equipment {
   getPrice() {
     return this.price || 0;
@@ -72,6 +71,7 @@ class Memory extends Equipment {
 
 export { Cabbinet, FloppyDisk, HardDrive, Memory };
 
+// es5
 function EquipmentPattern(name) {
   this.equipments = [];
   this.name = name;
@@ -116,4 +116,4 @@ function Memory() {
 }
 Memory.prototype = Object.create(Equipment.prototype);
 
-module.exports = [EquipmentPattern, FloppyDisk, HardDrive, Memory];
+module.exports = { EquipmentPattern, FloppyDisk, HardDrive, Memory };
