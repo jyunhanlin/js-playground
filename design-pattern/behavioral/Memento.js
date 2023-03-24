@@ -1,6 +1,6 @@
 // Behavioral Design Patterns
 
-// Mementos cache
+// Memento
 
 var Person = function (name, street, city, state) {
   this.name = name;
@@ -27,12 +27,12 @@ Person.prototype = {
 var CareTaker = function () {
   this.mementos = {};
 
-  (this.add = function (key, memento) {
+  this.add = function (key, memento) {
     this.mementos[key] = memento;
-  }),
-    (this.get = function (key) {
-      return this.mementos[key];
-    });
+  };
+  this.get = function (key) {
+    return this.mementos[key];
+  };
 };
 
 function run() {
