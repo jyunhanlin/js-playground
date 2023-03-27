@@ -15,6 +15,57 @@
 // Singletons can be more difficult to test due to issues ranging from hidden dependencies,
 // the difficulty in creating multiple instances, difficulty in stubbing dependencies and so on.
 
+// -----
+var Singleton = (function () {
+  var instance;
+
+  function createInstance() {
+    var object = new Object('I am the instance');
+    return object;
+  }
+
+  return {
+    getInstance: function () {
+      if (!instance) {
+        instance = createInstance();
+      }
+      return instance;
+    },
+  };
+})();
+
+function run() {
+  var instance1 = Singleton.getInstance();
+  var instance2 = Singleton.getInstance();
+
+  console.log('Same instance? ' + (instance1 === instance2));
+}
+
+// -----
+class Person {
+  constructor() {
+    if (typeof Person.instance === 'object') {
+      return Person.instance;
+    }
+
+    Person.instance = this;
+
+    return this;
+  }
+}
+
+// -----
+
+function Person() {
+  if (typeof Person.instance === 'object') return Person.instance;
+
+  Person.instance = this;
+
+  return this;
+}
+
+// -----
+
 class SingletonClass {
   constructor() {
     if (!SingletonClass.instance) {
