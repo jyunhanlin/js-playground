@@ -11,8 +11,8 @@ function waitFor(milliseconds) {
  * Execute a promise and retry with exponential backoff
  * based on the maximum retry attempts it can perform
  * @param {object} options
- * @param {() => Promise | Promise} options.promise
- * @param {(retries: number) => number | number} [options.getNextTimeToWait]
+ * @param {(retries: number) => Promise|Promise} options.promise
+ * @param {(retries: number) => number|number} [options.nextTimeToWait]
  * @param {(retries: number) => Promise} [options.onRetry]
  * @param {(error: any, retries: number) => Promise} [options.onError]
  * @param {number} [options.maxRetries=3]
@@ -20,7 +20,7 @@ function waitFor(milliseconds) {
  */
 function promiseRetry({
   promise,
-  getNextTimeToWait = (retries) => 2 ** retries * 1000,
+  nextTimeToWait = (retries) => 2 ** retries * 1000,
   onRetry,
   onError,
   maxRetries = 3,
@@ -28,13 +28,13 @@ function promiseRetry({
   async function retry(retries) {
     try {
       if (retries > 0) {
-        let timeToWait = getNextTimeToWait;
-        if (typeof getNextTimeToWait === 'function') timeToWait = getNextTimeToWait(retries);
+        let timeToWait = nextTimeToWait;
+        if (typeof nextTimeToWait === 'function') timeToWait = nextTimeToWait(retries);
         console.log(`waiting for ${timeToWait}ms...`);
         await waitFor(timeToWait);
       }
 
-      if (typeof promise === 'function') return await promise();
+      if (typeof promise === 'function') return await promise(retries);
 
       return await promise;
     } catch (e) {
