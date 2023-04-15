@@ -18,9 +18,11 @@ generatorWrap(function* () {
   yield done(result4);
 });
 
-function run(fn) {
-  const gen = fn();
-  let result = gen.next();
+// ----
+
+function run(generatorFn) {
+  const generator = generatorFn();
+  let result = generator.next();
 
   return new Promise((resolve, reject) => {
     const next = (nextResult) => {
@@ -28,7 +30,7 @@ function run(fn) {
 
       nextResult.value
         .then((res) => {
-          const newResult = gen.next(res);
+          const newResult = generator.next(res);
 
           next(newResult);
         })
