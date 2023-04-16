@@ -1,42 +1,30 @@
-function generatorWrap(generatorFn) {
+function generatorWrapPromise(generatorFn) {
   const generator = generatorFn();
-
-  function handle(yielded) {
-    if (!yielded.done) {
-      yielded.value.then((result) => handle(generator.next(result)));
-    }
-  }
-
-  return handle(generator.next());
-}
-
-generatorWrap(function* () {
-  const result1 = yield promiseA();
-  const result2 = yield promiseB(result1);
-  const result3 = yield promiseC(result2);
-  const result4 = yield promiseB(result3);
-  yield done(result4);
-});
-
-// ----
-
-function run(generatorFn) {
-  const generator = generatorFn();
-  let result = generator.next();
 
   return new Promise((resolve, reject) => {
-    const next = (nextResult) => {
-      if (nextResult.done) resolve(nextResult.value);
+    const handle = (yielded) => {
+      if (yielded.done) resolve(yielded.value);
 
-      nextResult.value
-        .then((res) => {
-          const newResult = generator.next(res);
-
-          next(newResult);
-        })
-        .catch(reject);
+      yielded.value.then((res) => handle(generator.next(res))).catch(reject);
     };
 
-    next(result);
+    handel(generator.next());
   });
 }
+
+(async () => {
+  const promiseA = () => Promise.resolve('a');
+  const promiseB = (input) => Promise.resolve(input + 'b');
+  const promiseC = (input) => Promise.resolve(input + 'c');
+  const promiseD = (input) => Promise.resolve(input + 'd');
+
+  const result = await generatorWrapPromise(function* () {
+    const result1 = yield promiseA();
+    const result2 = yield promiseB(result1);
+    const result3 = yield promiseC(result2);
+    const result4 = yield promiseD(result3);
+    return result4;
+  });
+
+  console.log(result);
+})();
