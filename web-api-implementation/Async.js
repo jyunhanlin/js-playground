@@ -8,7 +8,7 @@ function generatorWrapPromise(generatorFn) {
       yielded.value.then((res) => handle(generator.next(res))).catch(reject);
     };
 
-    handel(generator.next());
+    handle(generator.next());
   });
 }
 
@@ -26,5 +26,5 @@ function generatorWrapPromise(generatorFn) {
     return result4;
   });
 
-  console.log(result);
+  console.log(result); // abcd
 })();
