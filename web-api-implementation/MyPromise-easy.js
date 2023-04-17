@@ -38,22 +38,32 @@ class Promise {
   }
 
   then(onFulfilled, onRejected) {
-    if (this.status === FULFILLED) {
-      onFulfilled(this.value);
-    }
+    return new MyPromise((resolve, reject) => {
+      if (this.status === FULFILLED) {
+        setTimeout(() => {
+          onFulfilled(this.value);
+        });
+      }
 
-    if (this.status === REJECTED) {
-      onRejected(this.reason);
-    }
+      if (this.status === REJECTED) {
+        setTimeout(() => {
+          onRejected(this.reason);
+        });
+      }
 
-    if (this.status === PENDING) {
-      this.onResolvedCallbacks.push(() => {
-        onFulfilled(this.value);
-      });
+      if (this.status === PENDING) {
+        this.onResolvedCallbacks.push(
+          setTimeout(() => {
+            onFulfilled(this.value);
+          })
+        );
 
-      this.onRejectedCallbacks.push(() => {
-        onRejected(this.reason);
-      });
-    }
+        this.onRejectedCallbacks.push(
+          setTimeout(() => {
+            onRejected(this.reason);
+          })
+        );
+      }
+    });
   }
 }
