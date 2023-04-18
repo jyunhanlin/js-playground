@@ -39,30 +39,32 @@ class Promise {
 
   then(onFulfilled, onRejected) {
     return new MyPromise((resolve, reject) => {
+      const fulfilled = setTimeout(() => {
+        const res = onFulfilled(this.value);
+        if (res instanceof MyPromise) {
+          res.then(resolve);
+        } else {
+          resolve(res);
+        }
+      });
+
+      const rejected = setTimeout(() => {
+        const res = onRejected(this.reason);
+        reject(res);
+      });
+
       if (this.status === FULFILLED) {
-        setTimeout(() => {
-          onFulfilled(this.value);
-        });
+        fulfilled();
       }
 
       if (this.status === REJECTED) {
-        setTimeout(() => {
-          onRejected(this.reason);
-        });
+        rejected();
       }
 
       if (this.status === PENDING) {
-        this.onResolvedCallbacks.push(
-          setTimeout(() => {
-            onFulfilled(this.value);
-          })
-        );
+        this.onResolvedCallbacks.push(fulfilled);
 
-        this.onRejectedCallbacks.push(
-          setTimeout(() => {
-            onRejected(this.reason);
-          })
-        );
+        this.onRejectedCallbacks.push(rejected);
       }
     });
   }
