@@ -5,3 +5,16 @@ function curry(fn) {
     else return (...args2) => gen(...args, ...args2);
   };
 }
+
+function curry(func) {
+  const len = func.length;
+  function partial(func, argsList, argsLen) {
+    if (argsList.length >= argsLen) {
+      return func(...argsList);
+    }
+
+    return function (...args) {
+      return partial(func, [...argsList, ...args], argsLen);
+    };
+  }
+}
