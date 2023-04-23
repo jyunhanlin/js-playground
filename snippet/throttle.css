@@ -1,0 +1,38 @@
+button{
+  animation: throttle 2s step-end forwards;
+}
+button:active{
+  animation: none;
+}
+@keyframes throttle {
+  from {
+    pointer-events: none;
+  }
+  to {
+    pointer-events: all;
+  }
+}
+
+/* --- */
+
+/* in js
+
+btn.disabled = true
+
+document.addEventListener('transitionstart', function(ev){
+  ev.target.disabled = true
+})
+
+document.addEventListener('transitionend', function(ev){
+  ev.target.disabled = false
+})
+*/
+
+button{
+  opacity: .99;
+  transition: opacity 2s;
+}
+button:not(:disabled):active{
+  opacity: 1;
+  transition: 0s;
+}
