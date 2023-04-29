@@ -4,7 +4,7 @@
 
 - non thenable, non promise
 
-  - no need to wait
+  - push to microtask queue
 
   ```javascript
   async function foo() {
@@ -19,7 +19,7 @@
 
 - thenable
 
-  - wait for one event loop
+  - wait for next microtask queue
 
   ```javascript
   class Bar {
@@ -47,7 +47,7 @@
 
 - promise
 
-  - wait for two event loop
+  - wait for next two microtask queue
 
   ```javascript
   async function foo() {
@@ -66,7 +66,7 @@
 
 - non thenable, non promise
 
-  - no need to wait
+  - push to microtask queue
 
   ```javascript
   async function foo() {
@@ -82,7 +82,7 @@
 
 - thenable
 
-  - wait for one event loop
+  - wait for next microtask queue
 
   ```javascript
   async function foo() {
@@ -104,7 +104,7 @@
 
 - promise
 
-  - wait for one event loop
+  - push to microtask queue
 
   ```javascript
   async function foo() {
@@ -119,7 +119,7 @@
   // a c b d e
   ```
 
-  - wait for two event loop (before node.js v11)
+  - wait for next two microtask queue (before node.js v11)
 
 ## Summary
 
