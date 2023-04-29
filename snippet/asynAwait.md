@@ -1,20 +1,258 @@
-# The event loop of async await
+# async await
 
-### The return value of async function
+## The return value of async function
 
 - non thenable, non promise
+
   - no need to wait
+
+  ```javascript
+  async function foo() {
+    return 'foo';
+  }
+  foo().then(() => console.log('a'));
+  Promise.resolve()
+    .then(() => console.log('b'))
+    .then(() => console.log('c'));
+  // a b c
+  ```
+
 - thenable
+
   - wait for one event loop
+
+  ```javascript
+  class Bar {
+    then(resolve) {
+      resolve();
+      console.log('then');
+    }
+  }
+
+  async function foo() {
+    // return new Bar()
+    return {
+      then(resolve, reject) {
+        resolve(); // required
+        console.log('then');
+      },
+    };
+  }
+  foo().then(() => console.log('a'));
+  Promise.resolve()
+    .then(() => console.log('b'))
+    .then(() => console.log('c'));
+  // then b a c
+  ```
+
 - promise
+
   - wait for two event loop
 
-### The value type after await
+  ```javascript
+  async function foo() {
+    return Promise.resolve('foo');
+  }
+  foo().then(() => console.log('a'));
+  Promise.resolve()
+    .then(() => console.log('b'))
+    .then(() => console.log('c'))
+    .then(() => console.log('d'));
+
+  // b c a d
+  ```
+
+## The value type after await
 
 - non thenable, non promise
+
   - no need to wait
+
+  ```javascript
+  async function foo() {
+    await 'foo';
+    console.log('a');
+  }
+  foo().then(() => console.log('b'));
+  Promise.resolve()
+    .then(() => console.log('c'))
+    .then(() => console.log('d'));
+  // a c b d
+  ```
+
 - thenable
+
   - wait for one event loop
+
+  ```javascript
+  async function foo() {
+    await {
+      then(resolve) {
+        resolve();
+        console.log('then');
+      },
+    };
+    console.log('a');
+  }
+  foo().then(() => console.log('b'));
+  Promise.resolve()
+    .then(() => console.log('c'))
+    .then(() => console.log('d'))
+    .then(() => console.log('e'));
+  // then c a d b e
+  ```
+
 - promise
+
   - wait for one event loop
+
+  ```javascript
+  async function foo() {
+    await Promise.resolve('foo');
+    console.log('a');
+  }
+  foo().then(() => console.log('b'));
+  Promise.resolve()
+    .then(() => console.log('c'))
+    .then(() => console.log('d'))
+    .then(() => console.log('e'));
+  // a c b d e
+  ```
+
   - wait for two event loop (before node.js v11)
+
+## Summary
+
+```javascript
+function baz() {
+  // console.log('baz')
+  // return 'baz'
+
+  // return {
+  //   then(resolve) {
+  //     console.log('baz')
+  //     resolve()
+  //   }
+  // }
+
+  return new Promise((resolve) => {
+    console.log('baz');
+    resolve();
+  });
+}
+
+async function foo() {
+  await baz();
+  console.log('a');
+}
+foo().then(() => console.log('b'));
+Promise.resolve()
+  .then(() => console.log('c'))
+  .then(() => console.log('d'))
+  .then(() => console.log('e'));
+// await baz is not promise nor thenable => baz a c b d e
+// await baz is thenable => baz c a d b e
+// await baz is promise => baz a c b d e
+```
+
+```javascript
+async function baz() {
+  // console.log('baz')
+  // return 'baz'
+
+  // return {
+  //   then(resolve) {
+  //     console.log('baz')
+  //     resolve()
+  //   }
+  // }
+
+  return new Promise((resolve) => {
+    console.log('baz');
+    resolve();
+  });
+}
+
+async function foo() {
+  await baz();
+  console.log('a');
+}
+foo().then(() => console.log('b'));
+Promise.resolve()
+  .then(() => console.log('c'))
+  .then(() => console.log('d'))
+  .then(() => console.log('e'));
+// await baz is not promise nor thenable => baz a c b d e
+// await baz is thenable => baz c a d b e
+// await baz is promise => baz c d a e b
+// before node.js 11, await baz is promise => baz c d e a b
+```
+
+## Combine async, await, Promise, then and setTimeout
+
+```javascript
+const async1 = async () => {
+  console.log('async1');
+  setTimeout(() => {
+    console.log('timer1');
+  }, 2000);
+  await new Promise((resolve) => {
+    console.log('promise1');
+    resolve();
+  });
+  console.log('async1 end');
+  return Promise.resolve('async1 success');
+};
+console.log('script start');
+async1().then((res) => console.log(res));
+console.log('script end');
+Promise.resolve(1)
+  .then(Promise.resolve(2))
+  .catch(3)
+  .then((res) => console.log(res));
+setTimeout(() => {
+  console.log('timer2');
+}, 1000);
+
+// script start
+// async1
+// promise1
+// script end
+// async1 end
+// 1
+// async1 success
+// timer2
+// timer1
+```
+
+```javascript
+const async1 = async () => {
+  console.log('async1');
+  setTimeout(() => {
+    console.log('timer1');
+  }, 2000);
+  await new Promise((resolve) => {
+    console.log('promise1');
+  });
+  console.log('async1 end');
+  return 'async1 success';
+};
+console.log('script start');
+async1().then((res) => console.log(res));
+console.log('script end');
+Promise.resolve(1)
+  .then(2)
+  .then(Promise.resolve(3))
+  .catch(4)
+  .then((res) => console.log(res));
+setTimeout(() => {
+  console.log('timer2');
+}, 1000);
+// script start
+// async1
+// promise1
+// script end
+// 1
+// timer2
+// timer1
+```
