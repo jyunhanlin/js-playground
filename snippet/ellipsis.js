@@ -1,3 +1,5 @@
+let primitiveText = '';
+
 function ellipsis(container, textNode) {
   const str = primitiveText;
   textNode.textContent = str;
