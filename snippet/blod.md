@@ -13,6 +13,7 @@ const base64 = btoa(String.fromCharCode.apply(null, new Uint8Array(arrayBuffer))
 ```
 
 ```js
+// node.js
 const toDataURL = async (url) => {
   const response = await fetch(url);
   const contentType = response.headers.get('content-type');
