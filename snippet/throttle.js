@@ -21,10 +21,10 @@ function throttle(fn, delay) {
   };
 }
 
-function throttle2(fn, delay, immedidate) {
+function throttle2(fn, delay, immediate) {
   let timer = true;
 
-  let fireImmediate = immedidate;
+  let fireImmediate = immediate;
 
   return function (...args) {
     if (fireImmediate) {

@@ -9,7 +9,7 @@ function updateDOM(lastScrollY) {
   p.style.opacity = 1 - scrollFraction;
 }
 
-function rAFThrottle(callback) {
+function throttleWithRAF(callback) {
   let requestID;
 
   return function (...args) {
@@ -24,7 +24,7 @@ function rAFThrottle(callback) {
   };
 }
 
-const throttledUpdateDOM = rAFThrottle(updateDOM);
+const throttledUpdateDOM = throttleWithRAF(updateDOM);
 
 function onScroll() {
   throttledUpdateDOM(window.scrollY);
