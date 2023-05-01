@@ -1,18 +1,21 @@
-// 1. when object has toSJON function
-let toJsonMyIntro = {
-  name: 'Gopal',
-  age: 25,
-  like: 'FE',
+# JSON stringify
+
+## When object has toJSON function
+
+```js
+const IntroToJSON = {
+  name: 'test',
   toJSON: function () {
     return "it's toJSON";
   },
 };
 
-console.log(JSON.stringify(toJsonMyIntro)); // it's toJSON
+console.log(JSON.stringify(IntroToJSON)); // it's toJSON
+```
 
-// ------
+## undefined, Object, Symbol
 
-// 2. undefined, Object, Symbol
+```js
 JSON.stringify([undefined, Object, Symbol('')]);
 // '[null,null,null]'
 
@@ -32,12 +35,13 @@ const resut = JSON.stringify(testObj, function (key, value) {
 
 console.log(resut);
 // {"x":"undefined","y":"function Object() { [native code] }","z":"Symbol(test)"}
+```
 
-// ------
+## circular reference
 
-// 3. circualr reference
+```js
 let objA = {
-  name: 'Gopal',
+  name: 'test',
 };
 
 let objB = {
@@ -54,10 +58,11 @@ JSON.stringify(objA);
 //     --- property 'name' closes the circle
 //     at JSON.stringify (<anonymous>)
 //     at <anonymous>:1:6
+```
 
-// ------
+## symbol key
 
-// 4. symbol key
+```js
 JSON.stringify({ [Symbol.for('foo')]: 'foo' }, [Symbol.for('foo')]);
 // '{}'
 
@@ -67,33 +72,38 @@ JSON.stringify({ [Symbol.for('foo')]: 'foo' }, function (k, v) {
   }
 });
 // undefined
+```
 
-// ------
+## NaN and Infinity
 
-// 5. NaN and Infinity
-let me = {
-  name: 'Gopal',
-  age: Infinity,
-  money: NaN,
+```js
+const Intro = {
+  name: 'test',
+  age: NaN,
+  money: Infinity,
 };
-let originObj = JSON.stringify(me);
-console.log(originObj); // {"name":"Gopal","age":null,"money":null}
+let obj = JSON.stringify(Intro);
+console.log(obj); // {"name":"test","age":null,"money":null}
 
 JSON.stringify([NaN, Infinity]);
 // [null,null]
+```
 
-// ------
+## un-enumerable
 
-// 6. un-enumberable
+```js
 let person = Object.create(null, {
-  name: { value: 'Gopal', enumerable: false },
+  name: { value: 'test', enumerable: false },
   age: { value: '25', enumerable: true },
 });
 
 console.log(JSON.stringify(person));
 // {"age":"25"}
+```
 
-// ------
+## third party
+
+```js
 import { parse, stringify } from 'lossless-json';
 
 const text = '{"decimal":2.370,"long":9123372036854000123,"big":2.3e+500}';
@@ -106,3 +116,4 @@ console.log(JSON.stringify(JSON.parse(text)));
 // LosslessJSON.parse will preserve all numbers and even the formatting:
 console.log(stringify(parse(text)));
 // '{"decimal":2.370,"long":9123372036854000123,"big":2.3e+500}'
+```
