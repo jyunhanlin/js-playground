@@ -1,4 +1,5 @@
 const taskList = breakBigTaskIntoMicroTasks(monsterTaskList);
+
 requestAnimationFrame(processTaskList);
 function processTaskList(taskStartTime) {
   let taskFinishTime;
