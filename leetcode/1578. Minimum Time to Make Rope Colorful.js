@@ -37,7 +37,7 @@ var minCost = function (colors, neededTime) {
   const sum = neededTime.reduce((a, b) => a + b, 0);
 
   let newSum = neededTime[0];
-  let maxCost = neededTime[0];
+  let maxCost = 0;
   for (let i = 1; i < colors.length; i += 1) {
     if (colors[i - 1] === colors[i]) {
       newSum -= Math.max(maxCost, neededTime[i - 1]);
