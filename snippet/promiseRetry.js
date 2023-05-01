@@ -8,13 +8,13 @@ function waitFor(milliseconds) {
 }
 
 /**
- * Execute a promise and retry with exponential backoff
+ * Execute a promise and retry
  * based on the maximum retry attempts it can perform
  * @param {object} options
- * @param {(retries: number) => Promise|Promise} options.promise
- * @param {(retries: number) => number|number} [options.nextTimeToWait]
- * @param {(retries: number) => Promise} [options.onRetry]
- * @param {(error: any, retries: number) => Promise} [options.onError]
+ * @param {(retries: number) => Promise|Promise} options.promise - a promise or a promise function
+ * @param {(retries: number) => number|number} [options.nextTimeToWait] - can be a number or backoff function
+ * @param {(retries: number) => any} [options.onRetry]
+ * @param {(error: any, retries: number) => any} [options.onError]
  * @param {number} [options.maxRetries=3]
  * @return {Promise}
  */
@@ -25,7 +25,7 @@ function promiseRetry({
   onError,
   maxRetries = 3,
 }) {
-  async function retry(retries) {
+  async function retryPromise(retries) {
     try {
       if (retries > 0) {
         let timeToWait = nextTimeToWait;
@@ -38,9 +38,9 @@ function promiseRetry({
 
       return await promise;
     } catch (e) {
-      if (retries < maxRetries) {
+      if (retries <= maxRetries) {
         onRetry?.(retries);
-        return retry(retries + 1);
+        return retryPromise(retries + 1);
       } else {
         onError?.(error, retries);
         throw e;
@@ -48,5 +48,5 @@ function promiseRetry({
     }
   }
 
-  return retry(0);
+  return retryPromise(0);
 }
