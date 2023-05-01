@@ -12,6 +12,15 @@ const blob = new Blob([new Uint8Array(arrayBuffer, byteOffset, length)]);
 const base64 = btoa(String.fromCharCode.apply(null, new Uint8Array(arrayBuffer)));
 ```
 
+```js
+const toDataURL = async (url) => {
+  const response = await fetch(url);
+  const contentType = response.headers.get('content-type');
+  const buffer = await response.arrayBuffer();
+  return `data:${contentType};base64,${Buffer.from(buffer).toString('base64')}`;
+};
+```
+
 ## base64 -> blob
 
 ```js
