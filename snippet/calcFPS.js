@@ -20,7 +20,6 @@ function calcFPS() {
   loop();
 }
 
-// implement  with requestAnimationFrame
 function calcFPS() {
   let tasks = [Date.now()];
   let startTime = Date.now();
