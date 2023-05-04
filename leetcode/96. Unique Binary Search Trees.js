@@ -9,19 +9,17 @@ var numTrees = function (n) {
   dp[0] = 1;
   dp[1] = 1;
 
-  for (let level = 2; level <= n; level += 1) {
-    for (let root = 1; root <= level; root += 1) {
-      dp[level] += dp[level - root] * dp[root - 1];
+  for (let i = 2; i <= n; i += 1) {
+    for (let j = 0; j < i; j += 1) {
+      dp[i] += dp[j] * dp[i - j - 1];
+      // dp[j]: the number of nodes on the left side of root
+      // dp[i - j - j]: the number of nodes on the right side of root
     }
   }
 
   return dp[n];
 };
 
-/**
- * @param {number} n
- * @return {number}
- */
 var numTrees = function (n) {
   const dp = new Array(n + 1).fill(0);
 
@@ -30,8 +28,8 @@ var numTrees = function (n) {
 
     if (dp[num]) return dp[num];
 
-    for (let i = 1; i <= num; i += 1) {
-      dp[num] += builder(i - 1) * builder(num - i);
+    for (let i = 0; i < num; i += 1) {
+      dp[num] += builder(i) * builder(num - i) - 1;
     }
     return dp[num];
   };
