@@ -16,10 +16,6 @@ var maxAlternatingSum = function (nums) {
   return even;
 };
 
-/**
- * @param {number[]} nums
- * @return {number}
- */
 var maxAlternatingSum = function (nums) {
   let res = nums[0];
 
@@ -28,4 +24,20 @@ var maxAlternatingSum = function (nums) {
   }
 
   return res;
+};
+
+var maxAlternatingSum = function (nums) {
+  let odd = 0;
+  let even = 0;
+
+  odd = nums[0];
+
+  for (let i = 1; i < nums.length; i += 1) {
+    const prevOdd = odd;
+    const prevEven = even;
+    odd = Math.max(odd, prevEven + nums[i]);
+    even = Math.max(even, prevOdd - nums[i]);
+  }
+
+  return odd;
 };
