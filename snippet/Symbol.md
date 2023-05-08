@@ -1,6 +1,8 @@
-/**
- * Symbol.iterator
- */
+# Symbol
+
+## Symbol.iterator
+
+```js
 class Song {
   constructor(name, artist, duration) {
     this.name = name;
@@ -39,10 +41,14 @@ playlist.addSong(new Song('Song 3', 'Artist 3', '5:10'));
 for (const song of playlist) {
   console.log(song.name);
 }
+// Song 1
+// Song 2
+// Song 3
+```
 
-/**
- * Symbol.toStringTag
- */
+## Symbol.toStringTag
+
+```js
 class People {
   constructor(name, age) {
     this.name = name;
@@ -57,10 +63,11 @@ class People {
 const people = new People('John', 18);
 
 console.log(people.toString()); // [object People]
+```
 
-/**
- * Symbol.toPrimitive
- */
+## Symbol.toPrimitive
+
+```js
 class MyDateTime {
   constructor(year, month, day, hour = 0, minute = 0, second = 0) {
     this._datetime = new Date(year, month - 1, day, hour, minute, second);
@@ -83,10 +90,11 @@ const myDate = new MyDateTime(2023, 4, 8, 15, 30, 0);
 console.log(myDate); // MyDateTime { _datetime: 2023-04-08T07:30:00.000Z }
 console.log(myDate + 10000); // Sat Apr 08 2023 15:30:00 GMT+0800 (Taipei Standard Time)10000
 console.log(`${myDate}`); // 4/8/2023, 3:30:00 PM
+```
 
-/**
- * Symbol.asyncIterator
- */
+## Symbol.asyncIterator
+
+```js
 class AsyncDataSource {
   constructor(data) {
     this._data = data;
@@ -116,10 +124,11 @@ async function processData() {
 }
 
 processData();
+```
 
-/**
- * Symbol.hasInstance
- */
+## Symbol.hasInstance
+
+```js
 class MyArray1 {
   static [Symbol.hasInstance](instance) {
     return Array.isArray(instance);
@@ -146,10 +155,11 @@ myArray.test();
 
 console.log(mappedArray instanceof MyArray2); // false
 console.log(mappedArray instanceof Array); // true
+```
 
-/**
- * Symbol.match
- */
+## Symbol.match
+
+```js
 class CustomRegExp extends RegExp {
   [Symbol.match](str) {
     const matches = super[Symbol.match](str);
@@ -164,10 +174,11 @@ class CustomRegExp extends RegExp {
 
 const regex = new CustomRegExp('hello', 'g');
 console.log('hello world'.match(regex)); // hello
+```
 
-/**
- * Symbol.replace
- */
+## Symbol.replace
+
+```js
 const vowels = ['a', 'e', 'i', 'o', 'u'];
 
 const customReplace = (str) => {
@@ -187,10 +198,11 @@ const customString = {
 };
 
 console.log('hello world'.replace(customString, '')); // outputs "h*ll* w*rld"
+```
 
-/**
- * Symbol.split
- */
+## Symbol.split
+
+```js
 const customSplit = (str) => str.split(/[\s$¥€]+/);
 
 const customRegExp = {
@@ -200,10 +212,11 @@ const customRegExp = {
 const string = '100$200¥300€400 500';
 
 console.log(string.split(customRegExp)); // ['100', '200', '300', '400', '500']
+```
 
-/**
- * Symbol.unscopables
- */
+## Symbol.unscopables
+
+```js
 const globalVars = {
   a: 10,
   b: 20,
@@ -216,3 +229,4 @@ with (globalVars) {
   console.log(a); // 10
   console.log(b); // ReferenceError
 }
+```
