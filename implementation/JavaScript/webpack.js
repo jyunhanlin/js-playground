@@ -63,9 +63,9 @@ class Compiler {
 
           node.arguments = [t.stringLiteral(fullPath)];
 
-          const exitModule = [...this.modules].find((item) => item.id === fullPath);
+          const existModule = [...this.modules].find((item) => item.id === fullPath);
 
-          if (!exitModule) {
+          if (!existModule) {
             module.dependencies.push(fullPath);
           }
         }
