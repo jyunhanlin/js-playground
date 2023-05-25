@@ -1,7 +1,7 @@
 // controlled and un-controlled
 import { useRef } from 'react';
 
-const Input = (props) => {
+export const Input = (props) => {
   const isControlled = props.value !== undefined;
 
   const stateRef = useRef(props.value);
@@ -28,7 +28,7 @@ const Input = (props) => {
   );
 };
 
-function usePropsValue(options) {
+export function usePropsValue(options) {
   const { value, defaultValue, onChange } = options;
 
   const [_, setFlag] = useState({});
