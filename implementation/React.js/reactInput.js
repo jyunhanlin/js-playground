@@ -2,13 +2,15 @@
 import { useRef } from 'react';
 
 export const Input = (props) => {
-  const isControlled = props.value !== undefined;
+  const { value, onChange, ...otherProps } = props;
 
-  const stateRef = useRef(props.value);
+  const isControlled = value !== undefined;
 
-  if (isControlled) stateRef.current = props.value;
+  const stateRef = useRef(value);
 
-  const finalValue = isControlled ? props.value : stateRef.current;
+  if (isControlled) stateRef.current = value;
+
+  const finalValue = isControlled ? value : stateRef.current;
 
   const [_, setFlag] = useState({});
 
@@ -22,8 +24,9 @@ export const Input = (props) => {
       onChange={(event) => {
         stateRef.current = event.target.value;
         forceUpdate();
-        props.onChange(event.target.value);
+        onChange(event.target.value);
       }}
+      {...otherProps}
     />
   );
 };
