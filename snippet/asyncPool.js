@@ -1,4 +1,4 @@
-async function asyncPool(poolLimit, array, iteratorFn) {
+async function asyncPool({ poolLimit, array, iteratorFn }) {
   const ret = [];
   const executing = [];
   for (const item of array) {
@@ -24,6 +24,10 @@ const timeout = (i) =>
     }, i)
   );
 
-asyncPool(2, [1000, 5000, 3000, 2000], timeout).then((res) => {
+asyncPool({
+  poolLimit: 2,
+  array: [1000, 5000, 3000, 2000],
+  iteratorFn: timeout,
+}).then((res) => {
   console.log(res);
 });
