@@ -39,5 +39,5 @@ var maxAlternatingSum = function (nums) {
     even = Math.max(even, prevOdd - nums[i]);
   }
 
-  return odd;
+  return Math.max(odd, even);
 };
