@@ -95,3 +95,59 @@ window.screen.availHeight;
 ```js
 window.screen.availWidth;
 ```
+
+---
+
+**螢幕寬度的物理像素值**
+
+```js
+window.screen.width * window.devicePixelRatio;
+```
+
+**scrollWidth, scrollLeft, 和 clientWidth 三者的關係**
+
+```js
+scrollWidth = scrollLeft + clientWidth;
+
+scrollHeight = scrollTop + clientHeight;
+```
+
+**offsetWidth 和 clientWidth 的關係**
+
+```js
+offsetWidth = 自身寬度 + padding + border;
+clientWidth = 自身寬度 + padding;
+```
+
+**event.clientX，event.clientY, event.offsetX 和 event.offsetY 的關係**
+
+```js
+// 相對於 srcElement的 x, y 座標
+event.offsetX, event.offsetY;
+
+// 相對於 viewport 的 x, y 座標，viewport 不包含工具欄與scrollLeft(scrollTop)
+event.clientX, event.clientY;
+
+// 相對於 document 的 x, y 座標，document ＝ viewport ＋ scrollLeft(scrollTop)
+event.pageX, event.pageY;
+
+// 相對於螢幕左上角的 x, y 座標
+event.screenX, event.screenY;
+```
+
+**pageX 和 clientX 的關係**
+
+```js
+ele.pageX = ele.clientX + ele.scrollLeft;
+```
+
+**getBoundingClientRect 的 top, bottom, left, right**
+
+都是相對於 viewport
+
+**movementX 和 movementY**
+
+```js
+curEvent.movementX = curEvent.screenX - prevEvent.screenX;
+curEvent.movementY = curEvent.screenY - prevEvent.screenY;
+```
