@@ -1,3 +1,4 @@
+// find shortest paths in a weighted graph with positive or negative edge weights (but with no negative cycles)
 // shortestPath(i, j, k) = min (shortestPath(i, j, k - 1), shortestPath(i, k, k - 1) + shortestPath(k, j, k - 1))
 
 function init(graph) {
