@@ -1,4 +1,4 @@
-// found the shortest path between two nodes
+// found the shortest path between two nodes in a weighted graph with positive edge weights
 // common variant: fixes a single node as the "source" node and finds shortest paths from the source to all other nodes in the graph
 
 let vertices = [];
