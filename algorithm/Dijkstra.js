@@ -1,5 +1,7 @@
 // found the shortest path between two nodes in a weighted graph with positive edge weights
 // common variant: fixes a single node as the "source" node and finds shortest paths from the source to all other nodes in the graph
+// Time complexity: O(E Log V) where, E is the number of edges and V is the number of vertices.
+// Space complexity: O(V)
 
 let vertices = [];
 let adjacencyList = null;
