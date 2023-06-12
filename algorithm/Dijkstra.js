@@ -6,7 +6,7 @@
 let vertices = [];
 let adjacencyList = null;
 
-function dijkstra(startNode) {
+function Dijkstra(startNode) {
   const distances = {};
   const paths = {};
   const visited = new Set();

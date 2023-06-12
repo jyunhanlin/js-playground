@@ -21,7 +21,7 @@ function init(graph) {
   return dist;
 }
 
-function floydWarshall(graph) {
+function FloydWarshall(graph) {
   const dist = init(graph);
   const len = graph.length;
   for (let k = 0; k < len; k += 1) {

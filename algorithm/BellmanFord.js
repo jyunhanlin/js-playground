@@ -2,7 +2,7 @@
 // slower than Dijkstra's algorithm
 // handle graphs in which some of the edge weights are negative numbers.
 
-// Time complexity: Worst-case performance O(|V||E|) Best-case performance O(|E|)
+// Time complexity: O(|V||E|)
 // Space complexity: O(|V|)
 
 /**
@@ -11,7 +11,7 @@
  * @param {number} startVertex
  * @return {array} dist
  */
-const bellman_ford = (vertexNumber, edges, startVertex) => {
+const BellmanFord = (vertexNumber, edges, startVertex) => {
   const dist = new Array(vertexNumber - 1).fill(Infinity);
   dist[startVertex] = 0;
 
