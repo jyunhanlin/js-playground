@@ -1,75 +1,63 @@
 const browserPrefixes = ['moz', 'ms', 'o', 'webkit'];
 
-// get the correct attribute name
 function getHiddenPropertyName(prefix) {
   return prefix ? prefix + 'Hidden' : 'hidden';
 }
 
-// get the correct event name
 function getVisibilityEvent(prefix) {
   return (prefix ? prefix : '') + 'visibilitychange';
 }
 
-// get current browser vendor prefix
 function getBrowserPrefix() {
   for (let i = 0; i < browserPrefixes.length; i += 1) {
     if (getHiddenPropertyName(browserPrefixes[i]) in document) {
-      // return vendor prefix
       return browserPrefixes[i];
     }
   }
-
-  // no vendor prefix needed
   return null;
 }
 
 class Visibility {
-  constructor({ onVisibleListener, onHiddenListener } = {}) {
+  constructor({ visibleListener, hiddenListener } = {}) {
     this.isVisible = true;
     const browserPrefix = getBrowserPrefix();
     this.hiddenPropertyName = getHiddenPropertyName(browserPrefix);
     this.visibilityEventName = getVisibilityEvent(browserPrefix);
-    this.onVisibleListeners = [];
-    this.onHiddenListeners = [];
-    if (onVisibleListener || onHiddenListener) {
-      onVisibleListener && this.onVisibleListeners.push(onVisibleListener);
-      onHiddenListener && this.onHiddenListeners.push(onHiddenListener);
-      this.bindListener();
-    }
+    this.visibleListeners = new Set();
+    this.hiddenListeners = new Set();
+    if (visibleListener) this.visibleListeners.add(visibleListener);
+    if (hiddenListener) this.hiddenListeners.add(hiddenListener);
+    this.bindListeners();
   }
 
   addVisibleListener(listener) {
-    this.onVisibleListeners.push(listener);
+    this.visibleListeners.add(listener);
   }
 
   removeVisibleListener(listener) {
-    this.onVisibleListeners = this.onVisibleListeners.filter(
-      (curListener) => curListener !== listener
-    );
+    this.visibleListeners.delete(listener);
   }
 
   addHiddenListener(listener) {
-    this.onHiddenListeners.push(listener);
+    this.hiddenListeners.add(listener);
   }
 
   removeHiddenListener(listener) {
-    this.onHiddenListeners = this.onHiddenListeners.filter(
-      (curListener) => curListener !== listener
-    );
+    this.hiddenListeners.delete(listener);
   }
 
   onVisible() {
     if (this.isVisible) return;
 
     this.isVisible = true;
-    this.onVisibleListeners.forEach((listener) => listener());
+    this.visibleListeners.forEach((listener) => listener());
   }
 
   onHidden() {
     if (!this.isVisible) return;
 
     this.isVisible = false;
-    this.onHiddenListeners.forEach((listener) => listener());
+    this.hiddenListeners.forEach((listener) => listener());
   }
 
   handleVisibilityChange = (forcedFlag) => {
@@ -81,7 +69,7 @@ class Visibility {
       return this.onHidden();
     }
 
-    if (document[hiddenPropertyName]) {
+    if (document[this.hiddenPropertyName]) {
       return this.onHidden();
     }
 
@@ -96,7 +84,7 @@ class Visibility {
     this.handleVisibilityChange(false);
   };
 
-  bindListener() {
+  bindListeners() {
     document.addEventListener(this.visibilityEventName, this.handleVisibilityChange, false);
     document.addEventListener('focus', this.handleFocus, false);
     document.addEventListener('blur', this.handleBlur, false);
