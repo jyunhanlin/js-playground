@@ -1,28 +1,6 @@
-const browserPrefixes = ['moz', 'ms', 'o', 'webkit'];
-
-function getHiddenPropertyName(prefix) {
-  return prefix ? prefix + 'Hidden' : 'hidden';
-}
-
-function getVisibilityEvent(prefix) {
-  return (prefix ? prefix : '') + 'visibilitychange';
-}
-
-function getBrowserPrefix() {
-  for (let i = 0; i < browserPrefixes.length; i += 1) {
-    if (getHiddenPropertyName(browserPrefixes[i]) in document) {
-      return browserPrefixes[i];
-    }
-  }
-  return null;
-}
-
 class Visibility {
   constructor({ visibleListener, hiddenListener } = {}) {
-    this.isVisible = true;
-    const browserPrefix = getBrowserPrefix();
-    this.hiddenPropertyName = getHiddenPropertyName(browserPrefix);
-    this.visibilityEventName = getVisibilityEvent(browserPrefix);
+    this.isVisible = !document.hidden;
     this.visibleListeners = new Set();
     this.hiddenListeners = new Set();
     if (visibleListener) this.visibleListeners.add(visibleListener);
@@ -62,17 +40,11 @@ class Visibility {
 
   handleVisibilityChange = (forcedFlag) => {
     if (typeof forcedFlag === 'boolean') {
-      if (forcedFlag) {
-        return this.onVisible();
-      }
-
+      if (forcedFlag) return this.onVisible();
       return this.onHidden();
     }
 
-    if (document[this.hiddenPropertyName]) {
-      return this.onHidden();
-    }
-
+    if (document.hidden) return this.onHidden();
     return this.onVisible();
   };
 
@@ -85,7 +57,7 @@ class Visibility {
   };
 
   bindListeners() {
-    document.addEventListener(this.visibilityEventName, this.handleVisibilityChange, false);
+    document.addEventListener('visibilitychange', this.handleVisibilityChange, false);
     document.addEventListener('focus', this.handleFocus, false);
     document.addEventListener('blur', this.handleBlur, false);
     window.addEventListener('focus', this.handleFocus, false);
@@ -93,7 +65,7 @@ class Visibility {
   }
 
   unbindListeners() {
-    document.removeEventListener(this.visibilityEventName, this.handleVisibilityChange);
+    document.removeEventListener('visibilitychange', this.handleVisibilityChange);
     document.removeEventListener('focus', this.handleFocus);
     document.removeEventListener('blur', this.handleBlur);
     window.removeEventListener('focus', this.handleFocus);
