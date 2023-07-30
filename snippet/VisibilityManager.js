@@ -26,14 +26,12 @@ class VisibilityManager {
 
   onVisible() {
     if (this.isVisible) return;
-
     this.isVisible = true;
     this.visibleListeners.forEach((listener) => listener());
   }
 
   onHidden() {
     if (!this.isVisible) return;
-
     this.isVisible = false;
     this.hiddenListeners.forEach((listener) => listener());
   }
