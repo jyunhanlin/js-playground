@@ -1,4 +1,4 @@
-class Visibility {
+class VisibilityManager {
   constructor({ visibleListener, hiddenListener } = {}) {
     this.isVisible = !document.hidden;
     this.visibleListeners = new Set();
