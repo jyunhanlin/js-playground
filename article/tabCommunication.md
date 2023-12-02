@@ -54,7 +54,7 @@ function initWorker() {
 }
 
 function handleMessage(data) {
-  // TODO: 处理接收到信息后的逻辑
+  // TODO
 }
 
 function sendMessage(data) {
