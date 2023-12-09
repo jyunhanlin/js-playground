@@ -57,3 +57,31 @@ function throttleWithLatestArgs(fn, delay) {
     }, Math.max(0, delay - (now - lastTime)));
   };
 }
+
+function throttleWithLatestArgs2(fn, delay, { immediate, recurring }) {
+  let isThrottled = false;
+  let saveArgs = null;
+
+  const executeFn = () => {
+    if (!saveArgs) isThrottled = false;
+    else {
+      fn(...saveArgs);
+      saveArgs = null;
+      isThrottled = false;
+
+      if (recurring) setTimeout(executeFn, delay);
+    }
+  };
+
+  return (...args) => {
+    if (isThrottled) {
+      saveArgs = args;
+      return;
+    }
+
+    if (immediate) fn(...args);
+
+    isThrottled = true;
+    setTimeout(executeFn, delay);
+  };
+}
