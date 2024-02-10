@@ -1,3 +1,5 @@
+// reference: https://web.dev/articles/optimize-long-tasks
+
 function yieldToMain() {
   if (scheduler?.yield) return scheduler.yield();
 
@@ -34,19 +36,39 @@ async function saveSettings() {
     // Run the task:
     task();
   }
+}
 
-  // // Validate the form at high priority
-  // scheduler.postTask(validateForm, {priority: 'user-blocking'});
+function saveSettings() {
+  // Validate the form at high priority
+  scheduler.postTask(validateForm, { priority: 'user-blocking' });
 
-  // // Show the spinner at high priority:
-  // scheduler.postTask(showSpinner, {priority: 'user-blocking'});
+  // Show the spinner at high priority:
+  scheduler.postTask(showSpinner, { priority: 'user-blocking' });
 
-  // // Update the database in the background:
-  // scheduler.postTask(saveToDatabase, {priority: 'background'});
+  // Update the database in the background:
+  scheduler.postTask(saveToDatabase, { priority: 'background' });
 
-  // // Update the user interface at high priority:
-  // scheduler.postTask(updateUI, {priority: 'user-blocking'});
+  // Update the user interface at high priority:
+  scheduler.postTask(updateUI, { priority: 'user-blocking' });
 
-  // // Send analytics data in the background:
-  // scheduler.postTask(sendAnalytics, {priority: 'background'});
+  // Send analytics data in the background:
+  scheduler.postTask(sendAnalytics, { priority: 'background' });
+}
+
+async function saveSettings() {
+  // Create an array of functions to run:
+  const tasks = [validateForm, showSpinner, saveToDatabase, updateUI, sendAnalytics];
+
+  // Loop over the tasks:
+  while (tasks.length > 0) {
+    // Shift the first task off the tasks array:
+    const task = tasks.shift();
+
+    // Run the task:
+    task();
+
+    // Yield to the main thread with the scheduler
+    // API's own yielding mechanism:
+    await scheduler.yield();
+  }
 }
