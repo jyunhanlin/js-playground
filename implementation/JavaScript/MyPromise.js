@@ -228,6 +228,15 @@ class MyPromise {
       }
     });
   }
+
+  static withResolvers() {
+    let resolve, reject;
+    const promise = new MyPromise((res, rej) => {
+      resolve = res;
+      reject = rej;
+    });
+    return { resolve, reject, promise };
+  }
 }
 
 const resolvePromise = (promise2, x, resolve, reject) => {
