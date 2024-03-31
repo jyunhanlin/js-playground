@@ -1,0 +1,8 @@
+- SRTBOT
+- The skills to find sub-problem
+  - prefix
+  - postfix
+  - substring
+  - sum
+    - sum
+    - pre-sum and post-sum
