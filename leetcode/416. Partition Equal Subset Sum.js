@@ -5,6 +5,32 @@
 var canPartition = function (nums) {
   const sum = nums.reduce((a, b) => a + b);
 
+  console.log(sum, sum % 2);
+
+  if (sum % 2 !== 0) return false;
+
+  const half = sum / 2;
+
+  const dp = {};
+  dp[0] = true;
+  for (let i = 0; i < nums.length; i += 1) {
+    const num = nums[i];
+    for (let j = half; j >= num; j -= 1) {
+      dp[j] = dp[j] || dp[j - num];
+    }
+
+    if (dp[half]) break;
+  }
+
+  return dp[half] || false;
+};
+/**
+ * @param {number[]} nums
+ * @return {boolean}
+ */
+var canPartition = function (nums) {
+  const sum = nums.reduce((a, b) => a + b);
+
   let isCan = false;
 
   const helper = (index, sum1, sum2) => {
