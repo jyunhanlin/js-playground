@@ -1,4 +1,10 @@
 - SRTBOT
+  - **S**ubproblems definition
+  - **R**elate subproblem solutions recursively
+  - **T**opological order to argue relation is acyclic and subproblems form a DAG
+  - **B**ase cases
+  - **O**riginal problem
+  - **T**ime analysis
 - The skills to find sub-problem
   - prefix
   - postfix
