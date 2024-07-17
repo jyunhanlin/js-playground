@@ -18,7 +18,7 @@ var goodIndices = function (nums, k) {
 
   const result = [];
 
-  for (let i = 1; i < len - 1; i += 1) {
+  for (let i = k; i < len - k; i += 1) {
     if (dp1[i - 1] >= k && dp2[i + 1] >= k) result.push(i);
   }
 
