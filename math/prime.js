@@ -20,6 +20,7 @@ const nthPrime = (n) => {
             count++;
             if (count === n) {
               resolve(curPrime);
+              return;
             }
           }
           curPrime++;
