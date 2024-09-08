@@ -4,10 +4,21 @@ function Container(x) {
   this.valueOf = () => x;
 }
 
+const plus1 = (x) => x + 1;
+const c = new Container(22);
+c.map(plus1); // 23
+c.valueOf(); // 22
+c.toString(); // Container(22)
+
 function Functor(x) {
   Container.call(this, x);
   this.map = (fn) => new this.constructor(fn(x));
 }
+
+const f = new Functor(22);
+const f2 = f.map(plus1).map(plus1);
+f2.map(plus1).valueOf(); // 25
+f2.toString(); // Functor(24)
 
 function Monad(x) {
   Functor.call(this, x);
@@ -15,6 +26,15 @@ function Monad(x) {
   this.chain = (fn) => new this.constructor(unwrap(fn(x)));
   this.ap = (v) => v.map(x);
 }
+
+const m = new Monad(22);
+const add = (x) => (y) => x + y;
+const fun = m.map(add);
+
+const m2 = new Monad(9);
+const ppp = m2.map((x) => fun.map((f) => f(x)));
+
+fun.ap(m2); // 31
 
 // Dealing with missing values: the MAYBE monad
 function Maybe(x) {
@@ -37,10 +57,11 @@ function Nothing() {
   this.orElse = (x) => new Maybe(x);
 }
 
+const times2 = (x) => 2 * x;
+new Maybe(100).map(plus1).map(times2).toString(); //  Just(202)
+new Maybe(null).map(plus1).map(times2).toString(); //  Nothing()
 new Maybe(1900).orElse(50).map(plus1).toString(); // Just(1901)
-
 new Maybe(null).orElse(50).map(plus1).toString(); // Just(51)
-
 new Maybe(null).map(plus1).orElse(50).toString(); // Just(50)
 
 // Dealing with errors: the EITHER monad
