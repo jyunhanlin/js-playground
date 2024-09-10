@@ -8,9 +8,8 @@ var minSumOfLengths = function (arr, target) {
   const dp = new Array(n).fill(Infinity); // dp[i]: the length of smallest subarray from a[0]...a[i] with sum === target
 
   let result = Infinity;
-  let sum = 0; // sum of current window;
+  let sum = 0; // sum of curretn window;
   let leftIndex = 0;
-  let prevMin = Infinity;
 
   for (let i = 0; i < n; i += 1) {
     sum += arr[i];
@@ -22,10 +21,12 @@ var minSumOfLengths = function (arr, target) {
 
     if (sum === target) {
       const curLen = i - leftIndex + 1;
+      dp[i] = curLen;
+
       result = Math.min(result, curLen + (dp[leftIndex - 1] || Infinity));
-      prevMin = Math.min(prevMin, curLen);
     }
-    dp[i] = prevMin;
+
+    dp[i] = Math.min(dp[i], dp[i - 1] || Infinity);
   }
 
   return result === Infinity ? -1 : result;
