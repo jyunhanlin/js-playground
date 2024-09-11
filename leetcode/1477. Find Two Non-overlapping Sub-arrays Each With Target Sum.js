@@ -19,12 +19,12 @@ var minSumOfLengths = function (arr, target) {
       leftIndex += 1;
     }
 
+    dp[i] = dp[i - 1] || Infinity;
+
     if (sum === target) {
       const curLen = i - leftIndex + 1;
       result = Math.min(result, curLen + (dp[leftIndex - 1] || Infinity));
       dp[i] = Math.min(curLen, dp[i - 1] || Infinity);
-    } else {
-      dp[i] = dp[i - 1] || Infinity;
     }
   }
 
