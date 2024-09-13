@@ -1,3 +1,4 @@
+// Greedy
 /**
  * @param {number[]} nums
  * @return {number}
