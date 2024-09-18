@@ -19,3 +19,25 @@ var maxTotalReward = function (rewardValues) {
 
   return Math.max(...dp[n - 1]);
 };
+
+/**
+ * @param {number[]} rewardValues
+ * @return {number}
+ */
+var maxTotalReward = function (rewardValues) {
+  rewardValues.sort((a, b) => a - b);
+  const n = rewardValues.length;
+
+  const dp = [0];
+
+  for (let i = 0; i < n; i += 1) {
+    const cur = new Set();
+    for (let j = 0; j < dp.length; j += 1) {
+      if (rewardValues[i] > dp[j]) cur.add(rewardValues[i] + dp[j]);
+    }
+
+    dp.push(...cur);
+  }
+
+  return Math.max(...dp);
+};
