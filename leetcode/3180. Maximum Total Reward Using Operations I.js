@@ -1,3 +1,25 @@
+/**
+ * @param {number[]} rewardValues
+ * @return {number}
+ */
+var maxTotalReward = function (rewardValues) {
+  rewardValues.sort((a, b) => a - b);
+  const n = rewardValues.length;
+
+  let dp = new Set([0]);
+
+  for (let i = 0; i < n; i += 1) {
+    const cur = new Set(dp);
+    dp.forEach((val) => {
+      if (rewardValues[i] > val) cur.add(rewardValues[i] + val);
+    });
+
+    dp = cur;
+  }
+
+  return Math.max(...dp);
+};
+
 // Time Limit Exceeded
 /**
  * @param {number[]} rewardValues
@@ -20,6 +42,7 @@ var maxTotalReward = function (rewardValues) {
   return Math.max(...dp[n - 1]);
 };
 
+// Time Limit Exceeded
 /**
  * @param {number[]} rewardValues
  * @return {number}
