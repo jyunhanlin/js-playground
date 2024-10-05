@@ -4,7 +4,7 @@ const camelize = (text) =>
     return p1.toLowerCase();
   });
 
-const decamelize = (str, separator) => {
+const deCamelize = (str, separator) => {
   separator = typeof separator === 'undefined' ? '_' : separator;
 
   return str
@@ -31,14 +31,14 @@ const snakeToCamelCase = (o) => {
 
 const camelCaseToSnake = (o) => {
   if (typeof o === 'string') {
-    return decamelize(o);
+    return deCamelize(o);
   } else if (typeof o === 'object') {
     return Object.fromEntries(
       Object.entries(o).map(([key, value]) => {
         if (value && typeof value === 'object') {
-          return [decamelize(key), camelCaseToSnake(value)];
+          return [deCamelize(key), camelCaseToSnake(value)];
         }
-        return [decamelize(key), value];
+        return [deCamelize(key), value];
       })
     );
   }
