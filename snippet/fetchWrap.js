@@ -3,7 +3,7 @@ function fetchWrap(fetchAPI, middleware) {
 
   const innerFetch = middleware.length === 1 ? fetchAPI : fetchWrap(fetchAPI, middleware.slice(1));
 
-  const next = middleware(0);
+  const next = middleware[0];
 
   const extendedFetch = function (url, options) {
     try {
