@@ -1,3 +1,29 @@
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number}
+ */
+var lengthOfLongestSubsequence = function (nums, target) {
+  const n = nums.length;
+  const dp = new Array(n + 1).fill().map(() => new Array(target + 1).fill(-1));
+
+  for (let i = 0; i <= n; i++) {
+    dp[i][0] = 0;
+  }
+
+  for (let i = 1; i <= n; i += 1) {
+    for (let j = 1; j <= target; j += 1) {
+      dp[i][j] = dp[i - 1][j];
+
+      if (j >= nums[i - 1] && dp[i - 1][j - nums[i - 1]] !== -1) {
+        dp[i][j] = Math.max(1 + dp[i - 1][j - nums[i - 1]], dp[i][j]);
+      }
+    }
+  }
+
+  return dp[n][target];
+};
+
 // TLE
 /**
  * @param {number[]} nums
