@@ -1,4 +1,39 @@
 /**
+ * @param {string} s1
+ * @param {string} s2
+ * @param {number} x
+ * @return {number}
+ */
+var minOperations = function (s1, s2, x) {
+  const n = s1.length;
+  const diff = [];
+
+  for (let i = 0; i < n; i += 1) {
+    if (s1[i] !== s2[i]) {
+      diff.push(i);
+    }
+  }
+
+  if (diff.length % 2 !== 0) return -1;
+  if (diff.length === 0) return 0;
+
+  const dp = new Array(n).fill().map(() => new Array(n).fill(-1));
+
+  function helper(l, r) {
+    if (l >= r) return 0;
+    if (dp[l][r] !== -1) return dp[l][r];
+
+    return (dp[l][r] = Math.min(
+      Math.min(x, diff[l + 1] - diff[l]) + helper(l + 2, r),
+      Math.min(x, diff[r] - diff[r - 1]) + helper(l, r - 2),
+      Math.min(x, diff[r] - diff[l]) + helper(l + 1, r - 1)
+    ));
+  }
+
+  return helper(0, diff.length - 1);
+};
+
+/**
  * @param {number[][]} grid
  * @return {number}
  */
