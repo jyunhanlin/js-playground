@@ -1,3 +1,30 @@
+/**
+ * @param {number} n
+ * @param {number[][]} offers
+ * @return {number}
+ */
+var maximizeTheProfit = function (n, offers) {
+  offers.sort((a, b) => a[1] - b[1]);
+
+  const dp = new Array(n).fill(0);
+
+  let index = 0;
+
+  for (let i = 0; i < n; i += 1) {
+    if (index < offers.length && offers[index][1] === i) {
+      while (index < offers.length && offers[index][1] === i) {
+        const [start, end, gold] = offers[index];
+        dp[i] = Math.max(dp[i], (dp[start - 1] || 0) + gold);
+        index += 1;
+      }
+    }
+
+    dp[i] = Math.max(dp[i], dp[i - 1] || 0);
+  }
+
+  return dp[n - 1];
+};
+
 // TLE
 /**
  * @param {number} n
