@@ -1,3 +1,22 @@
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var numberOfGoodSubarraySplits = function (nums) {
+  var oneIndex = nums.indexOf(1);
+  if (oneIndex === -1) return 0;
+  const MOD = 1e9 + 7;
+  let result = 1;
+  for (let i = 0; i < nums.length; i += 1) {
+    if (nums[i] === 1 && i > oneIndex) {
+      result = (result * (i - oneIndex)) % MOD;
+      oneIndex = i;
+    }
+  }
+
+  return result;
+};
+
 // TLE
 /**
  * @param {number[]} nums
