@@ -1,14 +1,13 @@
-function generatorWrapPromise(generatorFn) {
-  const generator = generatorFn();
+function asyncImpl(generatorTasksFn) {
+  const generator = generatorTasksFn();
 
   return new Promise((resolve, reject) => {
-    const handle = (yielded) => {
-      if (yielded.done) resolve(yielded.value);
-
-      yielded.value.then((res) => handle(generator.next(res))).catch(reject);
+    const handle = (next) => {
+      if (next.done) resolve(next.value);
+      return next.value.then((data) => handle(generator.next(data))).catch(reject);
     };
 
-    handle(generator.next());
+    return handle(generator.next());
   });
 }
 
@@ -18,7 +17,7 @@ function generatorWrapPromise(generatorFn) {
   const promiseC = (input) => Promise.resolve(input + 'c');
   const promiseD = (input) => Promise.resolve(input + 'd');
 
-  const result = await generatorWrapPromise(function* () {
+  const result = await asyncImpl(function* () {
     const result1 = yield promiseA();
     const result2 = yield promiseB(result1);
     const result3 = yield promiseC(result2);
