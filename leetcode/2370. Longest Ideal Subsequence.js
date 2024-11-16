@@ -16,10 +16,6 @@ var longestIdealString = function (s, k) {
     const curCode = getCode(s[i]);
     const prevCode = getCode(s[i - 1]);
 
-    if (Math.abs(curCode - prevCode) <= k) {
-      dp[i][curCode] = dp[i][prevCode] + 1;
-    }
-
     for (let j = 0; j < 26; j += 1) {
       dp[i][j] = Math.max(dp[i][j], dp[i - 1][j]);
       if (Math.abs(curCode - j) <= k) dp[i][curCode] = Math.max(dp[i][curCode], dp[i - 1][j] + 1);
