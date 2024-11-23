@@ -13,14 +13,13 @@ var peopleAwareOfSecret = function (n, delay, forget) {
 
   for (let i = 1; i < n; i += 1) {
     for (let j = 0; j < forget; j += 1) {
-      dp[i][j] += (dp[i - 1][j - 1] || 0) % MOD;
+      if (j - 1 >= 0) dp[i][j] += dp[i - 1][j - 1] % MOD;
       if (j - delay >= 0) dp[i][0] += dp[i][j] % MOD;
     }
   }
 
   return dp[n - 1].reduce((a, b) => a + b) % MOD;
 };
-
 /**
  * @param {number} n
  * @param {number} delay
