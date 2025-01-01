@@ -1,4 +1,4 @@
-## Dynamic programming
+# Dynamic programming
 
 ```js
 //  top down
@@ -24,7 +24,7 @@ for (i...) {
 }
 ```
 
-## Backtracking
+# Backtracking
 
 ```js
 result = [];
@@ -44,13 +44,13 @@ const backtrack = (...) => {
 }
 ```
 
-## BFS
+# BFS
 
-## Binary tree
+# Binary tree
 
-## Binary search
+# Binary search
 
-## Slide window
+# Slide window
 
 ```js
 const slideWindow = (str) => {
@@ -74,3 +74,17 @@ const slideWindow = (str) => {
   }
 };
 ```
+
+# Array, Linked List
+
+## Merge 2 Linked List
+
+create a dummy node to simply the connection between nodes.
+
+## Merge K order Linked list
+
+Use min heap
+
+## Remove Nth Node From End of Linked list
+
+create 2 nodes...
