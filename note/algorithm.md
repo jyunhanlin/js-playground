@@ -79,7 +79,7 @@ const slideWindow = (str) => {
 
 ## Merge 2 Linked List
 
-create a dummy node to simply the connection between nodes.
+Create a dummy node to simply the connection between nodes.
 
 ## Merge K order Linked list
 
@@ -87,7 +87,7 @@ Use min heap
 
 ## Remove Nth Node From End of Linked list
 
-create 2 nodes, p1 goes k step first, and then p1 and p2 start together
+Create 2 nodes, p1 goes k step first, and then p1 and p2 start together
 
 ```
 P2 - - - P1 - - - - - - - - - - - -
@@ -96,3 +96,42 @@ P2 - - - P1 - - - - - - - - - - - -
 - - - - - - - - - - - - - P2 - - P1
                           K
 ```
+
+## Middle of the Linked List
+
+Use slow and fast 2 nodes -> slow = slow.next, fast = fast.next.next,
+then the slow will be the middle of the Linked list
+
+## Circular of the Linked List
+
+Use the same way as Middle of the Linked List, when the slow === fast => there is circular
+
+### How to find the start of the circular
+
+When slow === fast -> slow = head -> slow = slow.next, fast = fast.next,
+when slow === fast, slow is the start of the circular (k -m)
+
+## Intersection of the 2 Linked List
+
+```js
+(p1 = headA), (p2 = headB);
+while (p1 !== p2) {
+  if (p1 === null) p1 = headB;
+  else p1 = p1.next;
+
+  if (p2 === null) p2 = headA;
+  else p2 = p2.next;
+}
+
+return p1;
+```
+
+## slow and fast pointer for array
+
+## presum
+
+for the accumulate sum of some section of data
+
+## diff
+
+for the frequently operate(add or sub) of some section of data
