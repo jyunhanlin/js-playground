@@ -87,4 +87,12 @@ Use min heap
 
 ## Remove Nth Node From End of Linked list
 
-create 2 nodes...
+create 2 nodes, p1 goes k step first, and then p1 and p2 start together
+
+```
+P2 - - - P1 - - - - - - - - - - - -
+     K              n - k
+
+- - - - - - - - - - - - - P2 - - P1
+                          K
+```
