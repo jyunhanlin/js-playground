@@ -128,6 +128,113 @@ return p1;
 
 ## slow and fast pointer for array
 
+```js
+const removeDuplicates = (nums) => {
+  if (nums.length === 0) return 0;
+
+  let slow = 0;
+  let fast = 0;
+
+  while (fast < nums.length) {
+    if (nums[slow] !== nums[fast]) {
+      slow += 1;
+      nums[slow] = nums[fast];
+    }
+    fast += 1;
+  }
+
+  return slow + 1;
+};
+```
+
+```js
+const removeElement = (nums, val) => {
+  let slow = 0;
+  let fast = 0;
+
+  while (fast < nums.length) {
+    if (nums[fast] !== val) {
+      nums[slow] = nums[fast];
+      slow += 1;
+    }
+
+    fast += 1;
+  }
+
+  return slow;
+};
+```
+
+```js
+const moveZeros = (nums) => {
+  const len = removeElement(nums, 0);
+
+  // append 0 the end of nums
+};
+```
+
+## left and right pointer
+
+```js
+const reverseString = (str) => {
+  let left = 0;
+  let right = str.length - 1;
+
+  while (left < right) {
+    const temp = s[left];
+    s[left] = s[right];
+    s[right] = temp;
+    left += 1;
+    right -= 1;
+  }
+};
+```
+
+```js
+// from outer to inner
+const isPalindrome = (str) => {
+  let left = 0;
+  let right = str.length - 1;
+
+  while (left < right) {
+    if (s[left] !== s[right]) return false;
+
+    left += 1;
+    right -= 1;
+  }
+
+  return true;
+};
+```
+
+```js
+
+// from center
+const palindrome = (str, left, right) => {
+
+  while(left >= 0; && right < str.length && s[left] === s[right]) {
+    left -= 1;
+    right += 1;
+  }
+
+  return str.substring(left + 1, right)
+
+}
+
+const longestPalindrome = (str) => {
+  let res = '';
+
+  for(let i = 0; i < str.length; i += 1) {
+    const s1 = palindrome(str, i, i);
+    const s1 = palindrome(str, i, i + 1);
+
+    res = res.length > s1.length ? res : s1;
+    res = res.length > s2.length ? res : s2;
+  }
+  return res;
+};
+```
+
 ## presum
 
 for the accumulate sum of some section of data
