@@ -239,6 +239,36 @@ const longestPalindrome = (str) => {
 
 for the accumulate sum of some section of data
 
+```js
+const sumRange = (nums, left, right) => {
+  const preSum = new Array(nums.length);
+  preSum[0] = 0;
+
+  for (let i = 1; i < nums.length; i += 1) {
+    preSum[i] = nums[i - 1] + preSum[i - 1];
+  }
+
+  return preSum[right + 1] - preSum[left];
+};
+```
+
+```js
+const sumRegion = (matrix, x1, y1, x2, y2) => {
+  const m = matrix.length;
+  const n = matrix[0].length;
+
+  const preSum = new Array(m + 1).fill().map(() => new Array(n + 1).fill(0));
+
+  for(let i = 1; i <= m; i += 1) {
+    for(let j = 1; j <=n j += 1) {
+      preSum[i][j] = preSum[i - 1][j] + preSum[i][j - 1] - preSum[i - 1][j - 1] + matrix[i - 1][j - 1];
+    }
+  }
+
+  return preSum[x2 + 1][y2 + 1] - preSum[x1][y2 + 1] - preSum[x2 + 1][y1] + preSum[x1][y1]
+};
+```
+
 ## diff
 
 for the frequently operate(add or sub) of some section of data
