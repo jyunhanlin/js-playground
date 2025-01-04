@@ -359,3 +359,7 @@ const carPooling = (trips, capacity) => {
   return true;
 };
 ```
+
+## LRU
+
+## LFU
