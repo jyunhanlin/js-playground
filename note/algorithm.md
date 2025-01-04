@@ -362,4 +362,10 @@ const carPooling = (trips, capacity) => {
 
 ## LRU
 
+Use object to get key and value
+Use doubly linked list to remove least recently
+
 ## LFU
+
+Maintain 3 maps
+key to val, key to freq, freq to key
