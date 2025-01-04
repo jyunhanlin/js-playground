@@ -272,3 +272,90 @@ const sumRegion = (matrix, x1, y1, x2, y2) => {
 ## diff
 
 for the frequently operate(add or sub) of some section of data
+
+```js
+class Difference {
+  constructor(nums) {
+    const diff = [];
+    diff[0] = nums[0];
+
+    for (let i = 1; i < nums.length; i += 1) {
+      diff[i] = nums[i] - nums[i - 1];
+    }
+
+    this.diff = diff;
+  }
+
+  increment(i, j, val) {
+    this.diff[i] += val;
+    if (j + 1 < this.diff.length) this.diff[j] += val;
+  }
+
+  result() {
+    const res = [];
+
+    res[0] = this.diff[0];
+    for (let i = 1; i < this.diff.length; i += 1) {
+      res[i] = res[i - 1] + diff[i];
+    }
+
+    return res;
+  }
+}
+```
+
+```js
+// leetcode 370
+const getModifiedArray = (length, updates) => {
+  const nums = new Array(length).fill(0);
+
+  const df = new Difference(nums);
+
+  for (const update of updates) {
+    const [i, j, val] = update;
+    df.increment(i, j, val);
+  }
+
+  return df.result();
+};
+```
+
+```js
+// leetcode 1109
+const corpFlightBookings = (bookings, n) => {
+  const nums = new Array(n).fill(0);
+
+  const df = new Difference(nums);
+
+  for (const booking of bookings) {
+    const [i, j, val] = booking;
+    df.increment(i, j, val);
+  }
+
+  return df.result();
+};
+```
+
+```js
+// leetcode 1094
+
+const carPooling = (trips, capacity) => {
+  const nums = new Array(1001).fill(0);
+
+  const df = new Difference(nums);
+
+  for (const trip of trips) {
+    const [val, i, j] = trip;
+
+    df.increment(i, j, val);
+  }
+
+  const res = df.result();
+
+  for (let i = 1; i < res.length; i += 1) {
+    if (capacity < res[i]) return false;
+  }
+
+  return true;
+};
+```
