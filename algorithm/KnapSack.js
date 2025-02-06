@@ -5,7 +5,7 @@
  * @param {number[]} values
  * @returns {number}
  */
-function KanpSack(maxWeight, weights, values) {
+function KnapSack(maxWeight, weights, values) {
   console.log(maxWeight, weights, values);
   let n = values.length;
   let dp = Array(values.length + 1)
