@@ -77,3 +77,47 @@ var canPartitionKSubsets = function (nums, k) {
   };
   return backtrack(0, k, 0);
 };
+
+/**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {boolean}
+ */
+var canPartitionKSubsets = function (nums, k) {
+  const n = nums.length;
+
+  if (k > n) return false;
+  const sum = nums.reduce((a, b) => a + b);
+  if (sum % k !== 0) return false;
+
+  const target = sum / k;
+
+  const memo = {};
+
+  const backtrack = (start, remainK, currentSum, used) => {
+    if (remainK === 0) return true;
+    if (currentSum === target) {
+      const res = backtrack(0, remainK - 1, 0, used);
+      memo[used] = res;
+      return res;
+    }
+
+    if (memo[used] != undefined) return memo[used];
+
+    for (let i = start; i < n; i += 1) {
+      if (((used >> i) & 1) === 1) continue;
+
+      if (nums[i] + currentSum > target) continue;
+
+      used |= 1 << i;
+      if (backtrack(i + 1, remainK, currentSum + nums[i], used)) {
+        memo[used] = true;
+        return true;
+      }
+      used ^= 1 << i;
+    }
+
+    return false;
+  };
+  return backtrack(0, k, 0, 0);
+};
