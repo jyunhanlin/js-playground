@@ -105,13 +105,12 @@ var canPartitionKSubsets = function (nums, k) {
     if (memo[used] != undefined) return memo[used];
 
     for (let i = start; i < n; i += 1) {
-      if (((used >> i) & 1) === 1) continue;
+      if ((used >> i) & 1) continue;
 
       if (nums[i] + currentSum > target) continue;
 
       used |= 1 << i;
       if (backtrack(i + 1, remainK, currentSum + nums[i], used)) {
-        memo[used] = true;
         return true;
       }
       used ^= 1 << i;
