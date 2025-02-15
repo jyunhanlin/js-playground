@@ -22,6 +22,7 @@ var countSubIslands = function (grid1, grid2) {
 
   for (let i = 0; i < m; i += 1) {
     for (let j = 0; j < n; j += 1) {
+      // it's not sub island!!
       if (grid1[i][j] === 0 && grid2[i][j] === 1) {
         dfs(grid2, i, j);
       }
