@@ -4,9 +4,9 @@ const isPrime = (num) => {
   return num > 1;
 };
 
-// nthPrime with setTimeout (but setTimeout has min 4s delay)
+// getPrime with setTimeout (but setTimeout has min 4s delay)
 const primeArr = [2];
-const nthPrime = (n) => {
+const getPrime = (n) => {
   return new Promise((resolve) => {
     if (primeArr[n - 1]) resolve(primeArr[n - 1]);
     else {
@@ -33,8 +33,8 @@ const nthPrime = (n) => {
   });
 };
 
-// nthPrime with requestAnimationFrame
-const nthPrimeWithRAF = (n) => {
+// getPrime with requestAnimationFrame
+const getPrimeWithRAF = (n) => {
   return new Promise((resolve) => {
     if (primeArr[n - 1]) resolve(primeArr[n - 1]);
     else {
@@ -65,8 +65,8 @@ const nthPrimeWithRAF = (n) => {
   });
 };
 
-// nthPrime with MessageChannel (like scheduler from react)
-const nthPrimeWithMessageChannel = (n) => {
+// getPrime with MessageChannel (like scheduler from react)
+const getPrimeWithMessageChannel = (n) => {
   return new Promise((resolve) => {
     if (primeArr[n - 1]) resolve(primeArr[n - 1]);
     else {
@@ -101,9 +101,9 @@ const nthPrimeWithMessageChannel = (n) => {
   });
 };
 
-// nthPrime (generator version)
+// getPrime (generator version)
 const primeMap = [2];
-function* nthPrimeGen(n = 1) {
+function* getPrimeGen(n = 1) {
   const findNthPrime = (nth) => {
     if (primeMap[nth - 1]) return primeMap[nth - 1];
     else {

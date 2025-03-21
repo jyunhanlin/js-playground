@@ -4,7 +4,7 @@ const isPrime = (num) => {
 };
 
 const primeArr = { 1: 2 };
-const nthPrime = (n) => {
+const getPrime = (n) => {
   return new Promise((resolve) => {
     if (primeArr[n]) resolve(primeArr[n]);
     else {
@@ -36,12 +36,12 @@ const nthPrime = (n) => {
   });
 };
 
-async function* nthPrimeGen(n = 1) {
-  let curPrime = await nthPrime(n);
+async function* getPrimeGen(n = 1) {
+  let curPrime = await getPrime(n);
   let nextN = n + 1;
 
   while (true) {
-    const nextPrime = await nthPrime(nextN);
+    const nextPrime = await getPrime(nextN);
     const next = yield curPrime;
 
     if (next && next.done) break;
@@ -50,14 +50,14 @@ async function* nthPrimeGen(n = 1) {
       curPrime = nextPrime;
       nextN = nextN + 1;
     } else if (typeof next === 'number') {
-      curPrime = await nthPrime(next);
+      curPrime = await getPrime(next);
       nextN = next + 1;
     }
   }
 }
 
 (async () => {
-  const gen = nthPrimeGen();
+  const gen = getPrimeGen();
   console.log(await gen.next()); // return { value: 2, done: false }
   console.log(await gen.next(500)); // return { value: 3571, done: false }, may take some time
   console.log(await gen.next(501)); // return { value: 3581, done: false }, instantly (nice to have)
