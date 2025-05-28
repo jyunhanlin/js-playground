@@ -5,9 +5,9 @@
  */
 var isAnagram = function (s, t) {
   const encode = (s) => {
-    let count = new Array(26).fill(0);
-    for (let c of s) {
-      let delta = c.charCodeAt(0) - 'a'.charCodeAt(0);
+    const count = new Array(26).fill(0);
+    for (const c of s) {
+      const delta = c.charCodeAt(0) - 'a'.charCodeAt(0);
       count[delta]++;
     }
     return count;
