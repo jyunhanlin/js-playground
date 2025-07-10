@@ -33,3 +33,31 @@ var nthUglyNumber = function (n) {
 
   return ugly[n];
 };
+
+/**
+ * @param {number} n
+ * @return {number}
+ */
+
+var nthUglyNumber = function (n) {
+  const pq = new MinPriorityQueue((a) => a[0]);
+
+  pq.enqueue([1, 2, 1]);
+  pq.enqueue([1, 3, 1]);
+  pq.enqueue([1, 5, 1]);
+
+  const ugly = new Array(n + 1);
+  let p = 1;
+
+  while (p <= n) {
+    const [product, prime, index] = pq.dequeue();
+    if (product !== ugly[p - 1]) {
+      ugly[p] = product;
+      p += 1;
+    }
+
+    pq.enqueue([ugly[index] * prime, prime, index + 1]);
+  }
+
+  return ugly[n];
+};
