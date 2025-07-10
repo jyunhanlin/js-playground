@@ -9,13 +9,13 @@ var nthUglyNumber = function (n) {
   let product2 = 1;
   let product3 = 1;
   let product5 = 1;
-  let ugly = new Array(n + 1);
-  let p = 1;
+  const ugly = new Array(n + 1);
 
-  while (p <= n) {
+  let i = 1;
+  while (i <= n) {
     const min = Math.min(product2, product3, product5);
-    ugly[p] = min;
-    p++;
+    ugly[i] = min;
+    i++;
 
     if (min === product2) {
       product2 = 2 * ugly[p2];
