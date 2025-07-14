@@ -9,3 +9,20 @@ var trailingZeroes = function (n) {
   }
   return numZeroes;
 };
+
+/**
+ * @param {number} n
+ * @return {number}
+ */
+var trailingZeroes = function (n) {
+  let res = 0;
+
+  let divisor = 5;
+
+  while (divisor <= n) {
+    res += Math.floor(n / divisor);
+    divisor *= 5;
+  }
+
+  return res;
+};
