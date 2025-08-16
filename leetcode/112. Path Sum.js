@@ -61,3 +61,43 @@ var hasPathSum = function (root, sum) {
     return hasPathSum(root.left, sum - root.val) || hasPathSum(root.right, sum - root.val);
   }
 };
+
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @param {number} targetSum
+ * @return {boolean}
+ */
+var hasPathSum = function (root, targetSum) {
+  let curSum = 0;
+
+  let hasTargetSum = false;
+
+  const traverse = (node) => {
+    if (!node) return;
+    if (hasTargetSum) return;
+
+    curSum += node.val;
+
+    if (!node.left && !node.right && curSum === targetSum) {
+      hasTargetSum = true;
+      return;
+    }
+
+    traverse(node.left);
+    traverse(node.right);
+
+    curSum -= node.val;
+  };
+
+  traverse(root);
+
+  return hasTargetSum;
+};
