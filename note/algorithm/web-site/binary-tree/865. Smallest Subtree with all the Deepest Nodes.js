@@ -17,15 +17,16 @@ var subtreeWithAllDeepest = function (root) {
     const left = maxDepth(node.left);
     const right = maxDepth(node.right);
 
-    if (left[1] === right[1]) {
-      return [node, left[1] + 1];
+    const [, leftDepth] = left;
+    const [, rightDepth] = right;
+
+    if (leftDepth === rightDepth) {
+      return [node, leftDepth + 1];
     }
 
-    const nextNode = left[1] > right[1] ? left : right;
+    const nextNode = leftDepth > rightDepth ? left : right;
 
-    nextNode[1] += 1;
-
-    return nextNode;
+    return [nextNode[0], nextNode[1] + 1];
   };
 
   const [node] = maxDepth(root);
