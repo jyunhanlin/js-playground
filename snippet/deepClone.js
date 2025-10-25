@@ -104,7 +104,6 @@ function deepClone(originValue, wMap = new WeakMap()) {
 
   for (const key in originValue) {
     if (originValue.hasOwnProperty(key)) {
-      // 递归调用deepClone，如果对象属性值中还包含对象，就会再次进行拷贝处理
       newValue[key] = deepClone(originValue[key], wMap);
     }
   }
