@@ -33,6 +33,24 @@ const getPrime = (n) => {
   });
 };
 
+// getPrime with async/await and setTimeout, easier to understand
+const getPrime2 = async (n) => {
+  if (primeArr[n - 1]) return primeArr[n - 1];
+  else {
+    let currentPrime = primeArr[primeArr.length - 1];
+    while (primeArr.length < n) {
+      currentPrime++;
+      if (isPrime(currentPrime)) {
+        primeArr.push(currentPrime);
+      }
+
+      // yield the control to the event loop
+      await new Promise((resolve) => setTimeout(resolve, 0));
+    }
+    return currentPrime;
+  }
+};
+
 // getPrime with requestAnimationFrame
 const getPrimeWithRAF = (n) => {
   return new Promise((resolve) => {
