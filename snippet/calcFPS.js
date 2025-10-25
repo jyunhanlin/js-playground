@@ -35,7 +35,7 @@ function calcFPS() {
       }
 
       tasks = tasks.filter((time) => current - time <= 1000);
-      const time = tasks[tail] - tasks[0];
+      const time = tasks[tasks.length - 1] - tasks[0];
 
       if (current - startTime > 1000) {
         console.log('fps:', time ? parseInt((tasks.length / time) * 1000) : 0);
