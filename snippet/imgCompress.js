@@ -24,7 +24,7 @@ function covertImageToBase64(file, callback) {
   let reader = new FileReader();
   reader.readAsDataURL(file); // to base64Image
 
-  reader.addEventListener('load', function (e) {
+  reader.addEventListener('load', () => {
     const base64Image = reader.result;
     callback && callback(base64Image);
     reader = null;
@@ -37,7 +37,7 @@ function compress(base64Image, callback) {
   const image = new Image();
   image.src = base64Image;
   document.body.appendChild(image);
-  image.addEventListener('load', function (e) {
+  image.addEventListener('load', () => {
     let ratio;
     let needCompress = false;
 
