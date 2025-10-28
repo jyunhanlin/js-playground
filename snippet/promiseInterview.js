@@ -35,7 +35,6 @@ const promiseWithTimeout = (promise, ms) =>
   ]);
 
 // cancellable promise
-
 const cancellablePromise = (promise) => {
   let isCanceled = false;
   const wrappedPromise = new Promise((resolve, reject) => {
