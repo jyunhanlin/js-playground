@@ -12,7 +12,7 @@ var processQueries = function (c, connections, queries) {
   for (const [u, v] of connections) uf.union(u, v);
 
   const connectors = new Array(c + 1);
-  const queuePtr = new Array(c + 1).fill(0); // Track the next unused index for each group
+  const queuePtr = new Array(c + 1).fill(0); // Track the next unused index for each group, without this one, meet Time Limit Exceeded
 
   for (let i = 1; i <= c; i++) {
     const r = uf.find(i);
