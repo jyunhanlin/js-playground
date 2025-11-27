@@ -13,7 +13,7 @@ var findOrder = function (numCourses, prerequisites) {
   // build graph
   const graph = buildGraph(numCourses, prerequisites);
 
-  const dfs = (course) => {
+  const traverse = (course) => {
     if (onPath[course]) hasCycle = true;
 
     if (visited[course] || hasCycle) return;
@@ -22,14 +22,14 @@ var findOrder = function (numCourses, prerequisites) {
     visited[course] = 1;
 
     for (const preCourse of graph[course]) {
-      dfs(preCourse);
+      traverse(preCourse);
     }
     postOrder.push(course);
     onPath[course] = 0;
   };
 
   for (let i = 0; i < numCourses; i += 1) {
-    dfs(i);
+    traverse(i);
   }
 
   if (hasCycle) return [];
