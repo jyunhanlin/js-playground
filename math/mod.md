@@ -1,13 +1,14 @@
 ```js
 // add
-(a + b) % k === ((a % k) + (b % k)) % k
+(a + b) % k === ((a % k) + (b % k)) % k;
+```
 
+```js
 // sub
-(a - b + k) % k === ((a % k) - (b % k) + k) % k
+(a - b + k) % k === ((a % k) - (b % k) + k) % k;
+```
 
+```js
 // mul
-(a _ b) % k === ((a % k) _ (b % k)) % k
-
-// div
-(a / b) % k === ((a % k) / (b % k)) % k
+(a * b) % k === ((a % k) * (b % k)) % k;
 ```
