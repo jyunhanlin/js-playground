@@ -35,3 +35,7 @@ Solution.prototype.pickIndex = function () {
  * var obj = new Solution(w)
  * var param_1 = obj.pickIndex()
  */
+
+// time complexity: O(n) (preSum)
+// time complexity: O(log n) (binary search)
+// space complexity: O(n)
