@@ -21,6 +21,9 @@ var findErrorNums = function (nums) {
   return [dup, missing];
 };
 
+// time: O(n)
+// space: O(1)
+
 /**
  * @param {number[]} nums
  * @return {number[]}
@@ -43,3 +46,6 @@ var findErrorNums = function (nums) {
 
   return [dup, missing];
 };
+
+// time: O(n)
+// space: O(n)
