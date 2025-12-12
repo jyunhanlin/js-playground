@@ -29,16 +29,16 @@ var countCoveredBuildings = function (n, buildings) {
   let count = 0;
 
   for (const [x, y] of buildings) {
-    const row = rowMap.get(x);
-    const col = colMap.get(y);
+    const rowList = rowMap.get(x);
+    const colList = colMap.get(y);
 
-    const posRow = lowerBound(row, y);
+    const posRow = lowerBound(rowList, y);
     const left = posRow > 0;
-    const right = posRow + 1 < row.length;
+    const right = posRow + 1 < rowList.length;
 
-    const posCol = lowerBound(col, x);
+    const posCol = lowerBound(colList, x);
     const up = posCol > 0;
-    const down = posCol + 1 < col.length;
+    const down = posCol + 1 < colList.length;
 
     if (left && right && up && down) count++;
   }
@@ -58,4 +58,47 @@ function lowerBound(arr, target) {
 }
 
 // time complexity: O(n log n)
+// space complexity: O(n)
+
+// Time Limit Exceeded
+var countCoveredBuildings = function (n, buildings) {
+  const rowMap = new Map();
+  const colMap = new Map();
+
+  for (const [x, y] of buildings) {
+    if (!rowMap.has(x)) rowMap.set(x, []);
+    if (!colMap.has(y)) colMap.set(y, []);
+
+    rowMap.get(x).push(y);
+    colMap.get(y).push(x);
+  }
+
+  let count = 0;
+
+  for (const [x, y] of buildings) {
+    const rowList = rowMap.get(x);
+    const colList = colMap.get(y);
+
+    let left = false;
+    let right = false;
+    let up = false;
+    let down = false;
+
+    for (let col of rowList) {
+      if (col < y) left = true;
+      if (col > y) right = true;
+    }
+
+    for (let row of colList) {
+      if (row < x) up = true;
+      if (row > x) down = true;
+    }
+
+    if (left && right && up && down) count++;
+  }
+
+  return count;
+};
+
+// time complexity: O(n^2)
 // space complexity: O(n)
