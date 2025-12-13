@@ -7,26 +7,20 @@ var ExamRoom = function (n) {
     let max1 = -1;
     let max2 = -1;
 
-    if (start1 === -1) {
-      max1 = end1;
-    } else if (end1 === this.n) {
-      max1 = this.n - 1 - start1;
-    }
-
-    if (start2 === -1) {
-      max2 = end2;
-    } else if (end2 === this.n) {
-      max2 = this.n - 1 - start2;
-    }
+    if (start1 === -1) max1 = end1;
+    else if (end1 === this.n) max1 = this.n - 1 - start1;
 
     if (max1 === -1) {
       const seat1 = Math.floor((end1 + start1) / 2);
-      max1 = Math.min(Math.abs(start1 - seat1), Math.abs(end1 - seat1));
+      max1 = Math.min(seat1 - start1, end1 - seat1);
     }
+
+    if (start2 === -1) max2 = end2;
+    else if (end2 === this.n) max2 = this.n - 1 - start2;
 
     if (max2 === -1) {
       const seat2 = Math.floor((end2 + start2) / 2);
-      max2 = Math.min(Math.abs(start2 - seat2), Math.abs(end2 - seat2));
+      max2 = Math.min(seat2 - start2, end2 - seat2);
     }
 
     if (max1 !== max2) return max2 - max1;
