@@ -47,12 +47,15 @@ ExamRoom.prototype.seat = function () {
     return this.n - 1;
   }
 
-  const seat = Math.floor((end - start) / 2) + start;
+  const seat = Math.floor((end + start) / 2);
 
   this.pq.enqueue([start, seat]);
   this.pq.enqueue([seat, end]);
 
   return seat;
+
+  // time complexity: O(logn)
+  // space complexity: O(n)
 };
 
 /**
@@ -70,10 +73,8 @@ ExamRoom.prototype.leave = function (p) {
 
     if (start === p) {
       endForP = end;
-      // if (p ===0) break;
     } else if (end === p) {
       startForP = start;
-      // if (p === this.n) break;
     } else {
       toQueue.push([start, end]);
     }
@@ -84,6 +85,9 @@ ExamRoom.prototype.leave = function (p) {
   for (const interval of toQueue) {
     this.pq.enqueue(interval);
   }
+
+  // time complexity: O(nlogn)
+  // space complexity: O(n)
 };
 
 /**
