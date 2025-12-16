@@ -48,3 +48,6 @@ var totalNQueens = function (n) {
 
   return res;
 };
+
+// time complexity: O(n!)
+// space complexity: O(n)
