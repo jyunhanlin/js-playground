@@ -48,6 +48,10 @@ var minimumSumOfChessJump = function (matrix) {
   return dp[m - 1][n - 1] === Infinity ? -1 : dp[m - 1][n - 1];
 };
 
+// time complexity: O(m * n * 8)
+// space complexity: O(m * n)
+
+// Time Limit Exceeded
 var minimumSumOfChessJump = function (matrix) {
   let m = matrix.length;
   let n = matrix[0].length;
@@ -94,6 +98,9 @@ var minimumSumOfChessJump = function (matrix) {
 
   return dp[m - 1][n - 1] === Infinity ? -1 : dp[m - 1][n - 1];
 };
+
+// time complexity: O(m * n * log(m * n))
+// space complexity: O(m * n)
 
 class PriorityQueue {
   constructor(comparator = (a, b) => a > b) {
