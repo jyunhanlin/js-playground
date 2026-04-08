@@ -20,7 +20,7 @@ There are no build, lint, or test commands — each file is self-contained.
 - **leetcode/** — ~400 LeetCode solutions, named `<number>. <Problem Name>.js`. Often contain multiple approaches (brute force + optimized) in a single file.
 - **algorithm/** — Classic algorithms (Dijkstra, Bellman-Ford, Floyd-Warshall, Kruskal, binary search, LRU/FIFO cache, knapsack, Luhn).
 - **data-structure/** — Implementations of common data structures (linked list, trees, heaps, graphs, trie, segment tree, red-black tree, queue, stack).
-- **design-pattern/** — GoF patterns organized by category (`behavioral/`, `creational/`, `structural/`). Mostly JS, one TS file (Bridge.ts).
+- **design-pattern/** — GoF patterns organized by category (`behavioral/`, `creational/`, `structural/`). `behavioral/` and `structural/` are markdown notes (concept + JS examples); `creational/` is still JS source files. One JS file remains in `behavioral/` (PubSub.js).
 - **snippet/** — Reusable JS utilities and patterns (debounce, throttle, deep clone, async pool, promise helpers, DOM utilities, state machines, etc.).
 - **implementation/** — Reimplementations of JS/React internals (`JavaScript/` has Promise, bind/call/apply, new, etc.; `React.js/` has hooks, state management, synthetic events, etc.).
 - **math/** — Math utilities (GCD, LCM, primes, modular arithmetic, quick pow).
