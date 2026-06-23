@@ -7,9 +7,9 @@
 // ---------- 階段一：樸素三維 DP（會 TLE + MLE）----------
 // dp[i][1][j] 下一步往上、dp[i][0][j] 下一步往下
 // var zigZagArrays = function (n, l, r) {
-//   const MOD = 1000000007n;
+//   const MOD = BigInt(1e9 + 7);
 //   const m = r - l + 1;
-//   const dp = Array.from({ length: n + 1 }, () => [new Array(m).fill(0n), new Array(m).fill(0n)]);
+//   const dp = new Array(n + 1).fill().map(() => [new Array(m).fill(0n), new Array(m).fill(0n)]);
 //   for (let j = 0; j < m; j += 1) {
 //     dp[1][0][j] = 1n;
 //     dp[1][1][j] = 1n;
@@ -31,7 +31,7 @@
 // ---------- 階段二：砍掉 i 維度（滾動陣列）-> 解決 MLE ----------
 // 算 dp[i] 只用到 dp[i - 1]，更早的層用不到，只留 prev / cur 兩層。
 // var zigZagArrays = function (n, l, r) {
-//   const MOD = 1000000007n;
+//   const MOD = BigInt(1e9 + 7);
 //   const m = r - l + 1;
 //   let prev = [new Array(m).fill(1n), new Array(m).fill(1n)];
 //   for (let i = 2; i <= n; i += 1) {
@@ -62,7 +62,7 @@
  * @return {number}
  */
 var zigZagArrays = function (n, l, r) {
-  const MOD = 1000000007n;
+  const MOD = BigInt(1e9 + 7);
   const m = r - l + 1;
 
   // up[j]   : 結尾值 (l + j)，下一步必須往上 (UP)
