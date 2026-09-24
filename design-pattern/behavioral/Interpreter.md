@@ -10,6 +10,8 @@ Define grammar rules as classes, compose them into an expression tree, then inte
 | **Terminal Expression** | Leaf node — holds an atomic value, cannot be decomposed further |
 | **Non-terminal Expression** | Branch node — combines child expressions via an operation |
 
+**Reified:** one grammar rule. One object per node in the expression tree.
+
 ## Example 1: Math Expression Evaluator
 
 Terminal expressions (leaves) hold values, non-terminal expressions (branches) combine sub-expressions. The tree structure determines evaluation order.

@@ -9,6 +9,8 @@ Define a subscription mechanism: when a subject's state changes, all registered 
 | **Subject / Publisher** | Maintains observer list, provides `register()`, `unregister()`, `notify()` |
 | **Observer** | Implements `update()` — defines reaction to state changes |
 
+**Reified:** the reaction to a change. One object per subscriber.
+
 ## Example 1: Online Auction
 
 Auctioneer (subject) notifies all bidders (observers) when the price changes. Bidders can join or leave at any time.

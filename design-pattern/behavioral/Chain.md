@@ -9,6 +9,8 @@ Link multiple handlers into a chain. A request travels along the chain until a h
 | **Handler** | Defines the handling interface and holds a reference to the next handler |
 | **Concrete Handler** | Decides whether to handle the request or pass it along |
 
+**Reified:** one handling step. One object per step; the chain is built once and reused.
+
 ## Two Variants
 
 1. **Short-circuit chain** — request stops at the first handler that can process it (e.g. approval chain)

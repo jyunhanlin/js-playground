@@ -10,6 +10,8 @@ Encapsulate interchangeable algorithms as independent classes behind a common in
 | **Concrete Strategy** | Implements one specific algorithm |
 | **Context** | Holds a strategy reference, delegates work to it |
 
+**Reified:** one algorithm. One object per algorithm; strategies without data can be shared.
+
 ## Example 1: Report Exporter
 
 Export a report as Markdown, HTML, or plain text — each format is a strategy.

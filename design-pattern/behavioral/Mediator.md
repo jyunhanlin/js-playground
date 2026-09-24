@@ -9,6 +9,8 @@ Introduce a mediator object to coordinate interactions between multiple objects,
 | **Mediator** | Coordinates all colleague objects, holds the interaction logic |
 | **Colleague** | Only communicates with the mediator, never directly with other colleagues |
 
+**Reified:** the interaction rules between colleagues. Usually one object per group.
+
 ## Example 1: Air Traffic Control
 
 Multiple aircraft need to coordinate landing/takeoff. Without a tower, N planes need N×(N-1)/2 communication channels. With a tower, each plane only talks to one place.

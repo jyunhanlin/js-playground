@@ -9,11 +9,13 @@ Parent class defines the algorithm's fixed flow. Subclasses implement the variab
 | **Abstract Class** | Defines the template method (fixed flow) + abstract/hook steps |
 | **Concrete Class** | Implements the variable steps, inherits the fixed ones |
 
+**Reified:** nothing. The steps that vary are methods that subclasses override (inheritance, not composition). This is the one behavioral pattern that does not turn behavior into an object — compare Strategy.
+
 ## Three Kinds of Steps
 
 | Step | Description |
 |------|-------------|
-| **Fixed** | Implemented in parent, subclass cannot override (private) |
+| **Fixed** | Implemented in parent, subclass cannot override — in JS use a `#private` method (JS has no `final`) |
 | **Abstract** | No default — subclass must implement |
 | **Hook** | Has default — subclass may override if needed |
 
@@ -28,9 +30,9 @@ class DataAnalyzer {
   // Template method — defines the fixed flow
   run() {
     const data = this.readData();
-    const cleaned = this.cleanData(data);
+    const cleaned = this.#cleanData(data);
     this.processData(cleaned);
-    this.generateReport(cleaned);
+    this.#generateReport(cleaned);
   }
 
   // Abstract: subclass MUST implement
@@ -38,8 +40,8 @@ class DataAnalyzer {
     throw new Error('readData() must be implemented');
   }
 
-  // Fixed: same for all subclasses
-  cleanData(data) {
+  // Fixed: #private, so a subclass cannot replace it
+  #cleanData(data) {
     const cleaned = [...new Set(data.filter(Boolean))];
     console.log('After cleaning:', cleaned);
     return cleaned;
@@ -50,8 +52,8 @@ class DataAnalyzer {
     console.log('Compute mean, sum and other stats');
   }
 
-  // Fixed: same for all subclasses
-  generateReport(data) {
+  // Fixed: #private, so a subclass cannot replace it
+  #generateReport(data) {
     console.log('=== Analysis Report ===');
     console.log('Data count:', data.length);
     console.log('=======================');
@@ -67,7 +69,7 @@ class CsvAnalyzer extends DataAnalyzer {
     console.log('Read from CSV file');
     return ['Alice,90', 'Bob,85', '', 'Alice,90'];
   }
-  // uses default cleanData, processData, generateReport
+  // uses the default processData hook
 }
 
 class DatabaseAnalyzer extends DataAnalyzer {
@@ -105,12 +107,13 @@ Adding an API data source = one new subclass implementing `readData()`. Everythi
 A boolean hook that lets subclasses enable/disable optional steps:
 
 ```js
+// fragment — only run() and the new hook change; other steps same as above
 class DataAnalyzer {
   run() {
     const data = this.readData();
-    const cleaned = this.cleanData(data);
+    const cleaned = this.#cleanData(data);
     this.processData(cleaned);
-    this.generateReport(cleaned);
+    this.#generateReport(cleaned);
     if (this.shouldLog()) {
       console.log('Analysis complete');
     }
@@ -118,6 +121,8 @@ class DataAnalyzer {
 
   // toggle hook — default on, subclass can turn off
   shouldLog() { return true; }
+
+  // ...readData / #cleanData / processData / #generateReport as above
 }
 
 class SilentAnalyzer extends DataAnalyzer {

@@ -11,6 +11,8 @@ Encapsulate a request as an object so it can be stored, passed around, queued, u
 | **Receiver** | The object that actually performs the work |
 | **Invoker** | Manages commands — triggers execution, maintains history/queue |
 
+**Reified:** one request. A new object per operation; it keeps its own arguments, so undo/redo works.
+
 ## Example 1: Text Editor with Undo/Redo
 
 Each edit is a command object that knows how to execute and reverse itself. The editor maintains a history stack and a redo stack.

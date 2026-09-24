@@ -10,6 +10,8 @@ Provide a uniform traversal interface for a collection so the client doesn't nee
 | **Concrete Iterator** | Implements a specific traversal strategy (BFS, DFS, etc.) |
 | **Aggregate** | The collection/structure being traversed |
 
+**Reified:** the traversal position and order. One object per traversal; two loops need two iterators.
+
 ## Example: Org Chart Tree Traversal
 
 A company org chart is a tree. HR needs to notify everyone, but different scenarios require different traversal orders:

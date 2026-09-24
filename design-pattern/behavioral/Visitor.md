@@ -10,6 +10,8 @@ Separate operations from the data structure they act on. The data structure (ele
 | **Visitor** | Encapsulates an operation, with a `visit` method per element type |
 | **Double Dispatch** | `element.accept(visitor)` → `visitor.visitXxx(element)` — dispatches on both element type and visitor type |
 
+**Reified:** one operation. One class per operation. The visitors here collect results (`totalSize`, `results`, `depth`), so each run needs a new instance.
+
 ## When to Use
 
 Both conditions must hold:
@@ -50,11 +52,15 @@ class Directory {
     for (const child of this.children) {
       child.accept(visitor);
     }
+    // optional exit hook — lets a visitor undo per-directory state (e.g. depth)
+    visitor.leaveDirectory?.(this);
   }
 }
 ```
 
 `accept` is the double dispatch entry point: `File` calls `visitor.visitFile(this)`, `Directory` calls `visitor.visitDirectory(this)`.
+
+`leaveDirectory` is optional. Only visitors that track nesting need it. Babel and ESLint AST visitors use the same enter/exit pair.
 
 ### Visitors
 
@@ -99,6 +105,9 @@ class TreePrinter {
   visitDirectory(dir) {
     console.log('  '.repeat(this.depth) + `[Dir] ${dir.name}`);
     this.depth++;
+  }
+  leaveDirectory(dir) {
+    this.depth--;
   }
 }
 ```

@@ -10,6 +10,8 @@ Encapsulate each state as its own class. The object delegates behavior to its cu
 | **State Interface** | Defines all operations that vary by state |
 | **Concrete State** | Implements behavior for one state + transition logic to other states |
 
+**Reified:** one state. One class per state. These state classes hold no data, so one shared instance per state is enough — the examples call `new PaidState()` on each transition, which works but creates throwaway objects.
+
 ## Example 1: Order State Machine
 
 An e-commerce order flows through: Pending Payment → Paid → Shipped → Completed (or Cancelled). Same action behaves differently depending on current state.

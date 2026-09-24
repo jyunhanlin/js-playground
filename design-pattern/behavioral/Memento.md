@@ -10,6 +10,8 @@ Save and restore an object's state without exposing its internals. Instead of re
 | **Memento** | The snapshot itself — stores state, but doesn't expose it to outsiders |
 | **Caretaker** | Holds mementos — can store and retrieve them, but cannot read or modify their contents |
 
+**Reified:** the state at one moment. One object per save.
+
 ## Example: Game Save System
 
 An RPG character has position, HP, EXP, and inventory. Save a snapshot before a boss fight, restore it when defeated.

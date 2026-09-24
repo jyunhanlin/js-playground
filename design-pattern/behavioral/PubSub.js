@@ -12,11 +12,12 @@ class EventEmitter {
     }
   }
   off(name, callback) {
-    if (!this.message[name]) return;
+    if (!this.events[name]) return;
     if (!callback) {
-      this.message[name] = undefined;
+      delete this.events[name];
+      return;
     }
-    this.message[name] = this.message[name].filter((item) => item !== callback);
+    this.events[name] = this.events[name].filter((item) => item !== callback);
   }
   emit(name, ...args) {
     if (!this.events[name]) return;
