@@ -199,7 +199,7 @@ A single `canvas.move()` propagates through arbitrary nesting depth — the recu
 
 ## Composite + Visitor
 
-Composite provides the **structure**, Visitor provides the **operations**. They pair naturally: see `Visitor.md` (file system traversal example) — that file uses the same `Directory + File` shape as Example 1 here, but adds visitors to keep operations separate from the data.
+Composite provides the **structure**, Visitor provides the **operations**. They pair naturally: see [Visitor.md](../behavioral/Visitor.md) (file system traversal example) — that file uses the same folder + file tree as Example 1 here (`Directory` there, `Folder` here), but adds visitors to keep operations separate from the data.
 
 | | Composite | Visitor |
 |---|---|---|

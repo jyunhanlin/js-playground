@@ -115,9 +115,23 @@ class RateLimitedWeatherService {
 ```
 
 ```js
-const service = new RateLimitedWeatherService(new WeatherApiClient(), 60);
-console.log(service.getWeather('Tokyo'));
+const service = new RateLimitedWeatherService(new WeatherApiClient(), 2);
+
+for (const city of ['Tokyo', 'Osaka', 'Kyoto']) {
+  try {
+    console.log(service.getWeather(city));
+  } catch (e) {
+    console.log(`Error: ${e.message}`);
+  }
+}
+// Calling remote API for Tokyo
+// Tokyo: sunny, 25°C
+// Calling remote API for Osaka
+// Osaka: sunny, 25°C
+// Error: Rate limit exceeded: max 2 calls/min
 ```
+
+The third call never reaches `WeatherApiClient` — the proxy stops it.
 
 ## JS Native: `new Proxy()`
 
@@ -161,6 +175,8 @@ Both wrap an object behind the same interface. The difference is **intent**:
 | **Awareness** | Client sees just the interface | Client builds the wrap chain |
 
 ```js
+// fragment — not runnable on its own; the middleware classes are in Decorator.md
+
 // Decorator: client explicitly composes layers
 const handler = new LoggingMiddleware(
   new AuthMiddleware(
@@ -169,10 +185,11 @@ const handler = new LoggingMiddleware(
 );
 
 // Proxy: client only sees the interface, no idea proxy exists
+// (imageService is RemoteImageService or CachedImageService — ImageApp can't tell)
 const app = new ImageApp(imageService);
 ```
 
-If your intent is "add a caching layer of behavior" → decorator. If your intent is "control how the client accesses this resource" → proxy. The code can look identical, but the design intent differs.
+The same class can be either one. `CachedImageService` above and `UserDaoCacheDecorator` in [Decorator.md](Decorator.md#example-1-cache-decorator) are almost the same code. The difference is **who builds the wrap**: if the client stacks the layers itself, it is a decorator; if the wrap is injected and the client sees only the interface, it is a proxy. The code can look identical — the design intent differs.
 
 ## Trade-offs
 

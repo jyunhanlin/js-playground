@@ -118,7 +118,7 @@ Singleton = "globally unique". Flyweight = "shared per category".
 ## Real-world Examples
 
 - **Glyph rendering**: each character object shares a font glyph (TerrainType-equivalent) but has its own position
-- **DOM virtual nodes**: React reuses Fiber node prototypes
+- **V8 hidden classes**: objects with the same property layout share one hidden class (intrinsic: the shape); each object stores only its own values (extrinsic)
 - **String interning**: JS engines deduplicate identical string literals automatically
 - **Game particles, sprites, UI icons**: anything where you have thousands of "the same thing in different places"
 

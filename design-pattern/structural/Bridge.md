@@ -16,7 +16,7 @@ Message
 └── UrgentPushMessage
 ```
 
-2 types × 3 channels = 6 classes. Add a "scheduled" type and a "WeChat" channel → 12 classes. Each new dimension multiplies, not adds. Worse: every email subclass duplicates the email-sending logic, every urgent subclass duplicates the prefix logic.
+2 types × 3 channels = 6 classes. Add a "scheduled" type and an "in-app" channel → 12 classes. Each new dimension multiplies, not adds. Worse: every email subclass duplicates the email-sending logic, every urgent subclass duplicates the prefix logic.
 
 ## The Bridge Solution
 
@@ -143,7 +143,7 @@ new ScheduledMessage(new InAppSender(), '2024-01-01 10:00')
 // Send In-App: [Scheduled 2024-01-01 10:00] Happy New Year!
 ```
 
-Adding 1 type + 1 channel = 2 new classes, but unlocks 4 new combinations (`3 × 4 - 2 × 3 = 6` original cells become `3 × 4 = 12`, gaining 6 combinations from 2 classes).
+Adding 1 type + 1 channel = 2 new classes, but unlocks 6 new combinations (`2 × 3 = 6` → `3 × 4 = 12`).
 
 ## Bridge vs Other Wrapping Patterns
 
