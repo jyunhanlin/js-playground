@@ -58,6 +58,6 @@ JS has first-class functions, so many of these roles do not need a class:
 | Strategy | A function: `items.sort((a, b) => a.price - b.price)` |
 | Command | A closure: `queue.push(() => sendEmail(to))` — but undo needs a second function, so an object is still easier |
 | Iterator | A generator or `[Symbol.iterator]()` (see [Iterator.md](Iterator.md#js-native-symboliterator)) |
-| Observer | A callback — see [PubSub.js](PubSub.js) |
+| Observer | A callback instead of an object with `update()`. Put a broker in between and it becomes pub-sub — see [PubSub.js](PubSub.js) and [Observer vs Pub-Sub](Observer.md#observer-vs-pub-sub) |
 
 The intent stays the same. Only the container gets lighter.

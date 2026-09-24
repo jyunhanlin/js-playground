@@ -161,6 +161,8 @@ Both are linked chains, but:
 | **Termination** | Can stop early (short-circuit variant) | Always traverses the full chain |
 | **Purpose** | Route to the right handler | Layer additional behavior |
 
+In practice the line blurs: `AuthMiddleware` in [Decorator.md](../structural/Decorator.md#example-2-http-middleware-chain) is a decorator that stops early, just like a short-circuit chain.
+
 ## Trade-offs
 
 - **Pro**: Sender is decoupled from handlers — doesn't know who processes the request

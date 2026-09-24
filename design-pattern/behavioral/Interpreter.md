@@ -155,7 +155,7 @@ users.filter((u) => rule.matches(u)).forEach((u) => {
 2. **Complex grammars don't fit** — use proper parser tools (ANTLR, PEG.js) instead
 3. **Existing alternatives** — regex, script engines, rule engines already solve most cases
 
-The core idea — **decompose grammar into composable classes** — still appears everywhere: SQL WHERE builders, ESLint rule composition, React reconciliation, etc.
+The core idea — **decompose grammar into composable classes** — still appears in SQL WHERE builders and query/filter DSLs. Example 2 also has its own name: the **Specification pattern** (business rules composed with `and` / `or`). Tools like ESLint are different: a parser builds the AST, and each rule walks it — that is closer to [Visitor](Visitor.md).
 
 ## Reference
 

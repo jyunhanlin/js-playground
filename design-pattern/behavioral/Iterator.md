@@ -140,6 +140,31 @@ for (const emp of org) {
 }
 ```
 
+### With a generator
+
+A generator writes the same iterator without the `{ value, done }` bookkeeping:
+
+```js
+class OrgChartGen {
+  constructor(root) {
+    this.root = root;
+  }
+  *[Symbol.iterator]() {
+    const queue = [this.root];
+    while (queue.length) {
+      const current = queue.shift();
+      queue.push(...current.subordinates);
+      yield current;
+    }
+  }
+}
+
+console.log([...new OrgChartGen(ceo)].map((e) => e.name).join(' → '));
+// Zhang → Li → Wang → Zhao → Qian → Sun
+```
+
+Each `for...of` or spread still gets its own iterator object — one per traversal. The generator just writes that object for you.
+
 ## Reference
 
 - https://www.dofactory.com/javascript/design-patterns

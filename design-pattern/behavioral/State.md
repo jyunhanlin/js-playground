@@ -20,7 +20,7 @@ An e-commerce order flows through: Pending Payment → Paid → Shipped → Comp
 | State           | pay()      | ship()     | confirm()  | cancel()   |
 |-----------------|------------|------------|------------|------------|
 | Pending Payment | → Paid     | reject     | reject     | → Cancelled|
-| Paid            | reject     | → Shipped  | reject     | → Refund   |
+| Paid            | reject     | → Shipped  | reject     | → Cancelled|
 | Shipped         | reject     | reject     | → Completed| reject     |
 | Completed       | reject     | reject     | reject     | reject     |
 ```
@@ -107,7 +107,7 @@ order.cancel();  // Already shipped, cannot cancel
 order.confirm(); // Order confirmed, completed
 ```
 
-Adding a new state (e.g. "Returning") only requires a new class — no changes to existing states.
+Adding a new state (e.g. "Returning") means one new class, plus edits to the states that lead into it — here `CompletedState` would need a transition to `ReturningState`. The other states stay untouched. Adding a new *operation* (e.g. `return()`) costs more: every state class needs it.
 
 ## Example 2: Article Publishing Workflow
 
@@ -168,7 +168,8 @@ class Article {
 ## Trade-offs
 
 - **Pro**: Eliminates state if-else chains — each state is self-contained
-- **Pro**: Adding new states doesn't require modifying existing state classes
+- **Pro**: A new state is one new class; only the states that transition into it change
+- **Con**: A new operation must be added to every state class
 - **Con**: Overkill for 2-3 simple states — a switch-case may be clearer
 
 ## Reference

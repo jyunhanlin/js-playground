@@ -89,6 +89,8 @@ auction.placeBid('Alice', 2000);
 
 Instead of notifying all observers for every change, observers subscribe to specific event types. This is closer to real-world usage.
 
+> Strictly, this is already **pub-sub**: `EventCenter` is a broker between the code that publishes `MONSTER_KILLED` and the systems that react. The publisher never sees the subscriber list. See the table below.
+
 ```js
 class EventCenter {
   constructor() {
@@ -143,12 +145,15 @@ events.publish('MONSTER_KILLED', { monster: 'Slime' });
 
 ## Observer vs Pub-Sub
 
-| | Observer | Pub-Sub (EventEmitter) |
+| | Observer | Pub-Sub |
 |---|---|---|
-| **Coupling** | Subject holds direct reference to observer objects | Publisher doesn't know subscribers (only callbacks) |
-| **Dispatch** | All observers get every notification | Dispatched by event name/topic |
-| **Communication** | Synchronous method call | Can be async, cross-system (Kafka, RabbitMQ) |
-| **Use case** | Same-app object-to-object | Decoupled modules, cross-service messaging |
+| **Middleman** | None — the subject keeps its own observer list | A broker (event bus, `EventEmitter`, Kafka) sits in between |
+| **Who knows whom** | Subject knows its observers | Publisher and subscribers know only the broker |
+| **Dispatch** | Usually per subject (subscribe to *this* object) | Usually per topic / event name |
+| **Communication** | Synchronous method call | Sync in-process, or async across systems (Kafka, RabbitMQ) |
+| **In this note** | Example 1 (`LiveAuction`) | Example 2 (`EventCenter`), `PubSub.js` |
+
+Whether a listener is an object with `update()` or a plain callback does not decide it — the broker does.
 
 See `PubSub.js` for the EventEmitter implementation.
 

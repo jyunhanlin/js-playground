@@ -25,7 +25,8 @@ class GameSave {
     this.y = y;
     this.hp = hp;
     this.exp = exp;
-    // deep copy to prevent external mutation
+    // copy the array so later changes to the character don't leak into the save
+    // (a shallow copy is enough here: the items are strings)
     this.inventory = [...inventory];
   }
 }
@@ -114,6 +115,54 @@ console.log(hero.status());
 // Pos: (10,20) HP: 100 EXP: 50 Bag: [Iron Sword]
 ```
 
+## Enforcing It in JS
+
+The example above relies on convention. `GameSave` has public fields, so the caretaker *can* change a save:
+
+```js
+const save = manager.loadGame(0);
+save.hp = 9999; // nothing stops this
+```
+
+JS has no `friend` keyword, so a memento class cannot say "only the originator may read me". One way to enforce it: the originator keeps the real snapshots in a module-private `WeakMap` and hands out an empty, frozen token. The caretaker stores tokens but has nothing to read.
+
+```js
+// module scope — only the originator can see this
+const snapshots = new WeakMap();
+
+class SealedCharacter extends GameCharacter {
+  save() {
+    const token = Object.freeze({});
+    snapshots.set(token, {
+      x: this.x, y: this.y, hp: this.hp, exp: this.exp,
+      inventory: [...this.inventory],
+    });
+    return token;
+  }
+  restore(token) {
+    const s = snapshots.get(token);
+    Object.assign(this, s, { inventory: [...s.inventory] });
+  }
+}
+```
+
+```js
+const knight = new SealedCharacter(0, 0, 100);
+const saves = new SaveManager(); // same caretaker as before, unchanged
+saves.saveGame(knight);
+
+const token = saves.loadGame(0);
+console.log(Object.keys(token)); // [] — nothing to read
+token.hp = 9999;                 // ignored (throws in strict mode): the token is frozen
+
+knight.takeDamage(50);
+knight.restore(saves.loadGame(0));
+console.log(knight.status());
+// Pos: (0,0) HP: 100 EXP: 0 Bag: []
+```
+
+A `WeakMap` also lets a snapshot be garbage-collected once the caretaker drops its token.
+
 ## Memento vs Command Pattern Undo
 
 | | Command Pattern | Memento Pattern |
@@ -125,7 +174,7 @@ console.log(hero.status());
 ## Trade-offs
 
 - **Pro**: Simple, universal undo — no need to figure out inverse operations
-- **Pro**: Preserves encapsulation — caretaker can't peek inside the snapshot
+- **Pro**: Preserves encapsulation — the caretaker stores snapshots without knowing what is inside (in JS, enforced only with the `WeakMap` token above)
 - **Con**: Full snapshot each save — expensive if state is large and saves are frequent
 
 ## Reference
