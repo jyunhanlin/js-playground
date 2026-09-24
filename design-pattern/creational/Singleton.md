@@ -13,7 +13,7 @@ Guarantee a class has exactly one instance for the entire app lifecycle, with a 
 
 1. **Block external construction** — clients shouldn't be able to call `new`
 2. **Global access point** — provide a static `getInstance()` method
-3. **Thread/concurrency safety** — in multi-threaded languages, ensure two threads can't create two instances. JS is single-threaded so this isn't a concern at the language level.
+3. **Thread/concurrency safety** — in multi-threaded languages, ensure two threads can't create two instances. JS is single-threaded, so this is only a concern when initialization is async (see Variant 2).
 
 ## Variant 1: Eager Initialization
 
@@ -21,8 +21,13 @@ Create the instance up front. Simple, no race conditions, but you pay the cost e
 
 ```js
 class DatabaseManager {
-  // Created at class evaluation time
-  static #instance = new DatabaseManager();
+  // Declare first, then create in a static block. A field initializer
+  // (`static #instance = new DatabaseManager()`) would run the constructor
+  // before #instance exists, and the guard below would throw a TypeError.
+  static #instance;
+  static {
+    DatabaseManager.#instance = new DatabaseManager(); // created at class evaluation time
+  }
 
   #connectionInfo;
 
@@ -49,6 +54,11 @@ const db1 = DatabaseManager.getInstance();
 const db2 = DatabaseManager.getInstance();
 db1.execute('SELECT * FROM users');
 console.log(db1 === db2); // true
+// Connection established: mysql://localhost:3306/app   ← printed once, at class evaluation
+// Executing: SELECT * FROM users
+// true
+
+new DatabaseManager(); // Error: Use DatabaseManager.getInstance()
 ```
 
 ## Variant 2: Lazy Initialization
@@ -58,16 +68,27 @@ Create the instance only on first use. Saves startup cost and memory if the sing
 ```js
 class DatabaseManager {
   static #instance = null;
+  // JS has no private constructor. A private flag that only getInstance()
+  // can set plays that role.
+  static #creating = false;
   #connectionInfo;
 
   constructor() {
+    if (!DatabaseManager.#creating) {
+      throw new Error('Use DatabaseManager.getInstance()');
+    }
     this.#connectionInfo = 'mysql://localhost:3306/app';
     console.log(`Connection established: ${this.#connectionInfo}`);
   }
 
   static getInstance() {
     if (!DatabaseManager.#instance) {
-      DatabaseManager.#instance = new DatabaseManager();
+      DatabaseManager.#creating = true;
+      try {
+        DatabaseManager.#instance = new DatabaseManager();
+      } finally {
+        DatabaseManager.#creating = false;
+      }
     }
     return DatabaseManager.#instance;
   }
@@ -78,7 +99,49 @@ class DatabaseManager {
 }
 ```
 
-In Java/C++ you'd need double-checked locking to make this thread-safe. In JS, the event loop makes this trivially safe — only one execution context runs at a time.
+```js
+console.log('before first use');
+const db = DatabaseManager.getInstance();
+console.log(db === DatabaseManager.getInstance()); // true
+// before first use
+// Connection established: mysql://localhost:3306/app   ← printed on first use
+// true
+
+new DatabaseManager(); // Error: Use DatabaseManager.getInstance()
+```
+
+In Java/C++ you'd need double-checked locking to make this thread-safe. In JS, the event loop makes this safe — only one execution context runs at a time — **as long as `getInstance()` is synchronous**.
+
+### Async initialization
+
+If creating the instance needs `await` (e.g. opening a connection), two callers can both see "no instance yet" before either one finishes. The result is two instances. Cache the **promise** instead of the instance:
+
+```js
+class AsyncDatabaseManager {
+  static #pending = null;
+
+  static getInstance() {
+    // the second caller gets the same promise, not a second connection
+    AsyncDatabaseManager.#pending ??= AsyncDatabaseManager.#create();
+    return AsyncDatabaseManager.#pending;
+  }
+
+  static async #create() {
+    await new Promise((resolve) => setTimeout(resolve, 10)); // simulate connect()
+    console.log('Connection established (async)');
+    return new AsyncDatabaseManager();
+  }
+}
+
+Promise.all([
+  AsyncDatabaseManager.getInstance(),
+  AsyncDatabaseManager.getInstance(),
+]).then(([a, b]) => console.log(a === b));
+// Connection established (async)   ← once
+// true
+```
+
+If `connect()` can fail, reset `#pending` when the promise rejects, so the next call can retry.
 
 ## Variant 3: Module Singleton (most idiomatic in JS)
 
@@ -124,7 +187,7 @@ Both involve "sharing", but they answer different questions:
 | **Instance count** | Exactly one | One per type — many flyweights coexist |
 | **Goal** | Coordinate global state | Save memory by sharing immutable data |
 
-See `Flyweight.md` for the comparison.
+See [Flyweight.md](../structural/Flyweight.md#flyweight-vs-singleton) for the comparison.
 
 ## Trade-offs
 

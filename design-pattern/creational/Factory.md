@@ -105,11 +105,54 @@ app.doSomething();
 // CONSOLE: Start doing something...
 ```
 
-`Application` only depends on the `ILogger` interface. Adding a 4th logger type means a new `ILogger` subclass + a new `Application` subclass — existing code stays untouched.
+`Application` only depends on the `ILogger` interface. Adding a 4th logger type means a new `ILogger` subclass + a new `Application` subclass, plus one more branch where the app is picked. `Application` and the existing loggers stay untouched.
+
+### Pitfall: calling the factory method from the constructor
+
+The parent constructor runs **before** the subclass's class fields are set. If the factory method reads a field, it sees `undefined`:
+
+```js
+class StagingApp extends Application {
+  logPath = 'staging.log'; // set only after super() returns
+  createLogger() {
+    return new FileLogger(this.logPath);
+  }
+}
+
+new StagingApp().doSomething();
+// WRITE TO undefined: Start doing something...
+```
+
+A safer shape: create the product lazily, on first use.
+
+```js
+class LazyApplication {
+  #logger;
+  get logger() {
+    return (this.#logger ??= this.createLogger());
+  }
+  createLogger() {
+    throw new Error('Subclass must implement createLogger()');
+  }
+  doSomething() {
+    this.logger.log('Start doing something...');
+  }
+}
+
+class LazyStagingApp extends LazyApplication {
+  logPath = 'staging.log';
+  createLogger() {
+    return new FileLogger(this.logPath);
+  }
+}
+
+new LazyStagingApp().doSomething();
+// WRITE TO staging.log: Start doing something...
+```
 
 ## Connection to Template Method
 
-Notice `Application.constructor` calls `this.createLogger()` — the parent defines a workflow, the subclass plugs in one piece. **Factory Method is essentially Template Method specialized for object creation.** See `Template.md`.
+Notice `Application.constructor` calls `this.createLogger()` — the parent defines a workflow, the subclass plugs in one piece. **Factory Method is essentially Template Method specialized for object creation.** See [Template.md](../behavioral/Template.md).
 
 ## When to Use vs When Not To
 
@@ -118,7 +161,7 @@ Notice `Application.constructor` calls `this.createLogger()` — the parent defi
 - Libraries that expose extension points via subclassing
 
 **Not so good in JS:**
-- For simple cases, JS supports first-class functions and "composition over inheritance" — you can inject a logger directly into the constructor instead of subclassing. That approach is closer to **Abstract Factory** (or Strategy).
+- For simple cases, JS supports first-class functions and "composition over inheritance" — you can inject a logger directly into the constructor instead of subclassing. Injecting the logger itself is plain dependency injection — the logger acts like a Strategy. Injecting something that *creates* loggers (a factory function or object) is the composition-based counterpart of Factory Method, and the one-product case of **Abstract Factory**.
 - Most logging libraries (winston, pino) handle this via configuration, not subclassing.
 
 ## Factory Method vs Abstract Factory
@@ -129,7 +172,7 @@ Notice `Application.constructor` calls `this.createLogger()` — the parent defi
 | **Mechanism** | Subclass overrides creation method | Inject a factory object |
 | **Example** | One logger per app subclass | One UI theme creates buttons + checkboxes + text together |
 
-See `AbstractFactory.md` for the comparison.
+See [AbstractFactory.md](AbstractFactory.md#factory-method-vs-abstract-factory) for the comparison.
 
 ## Trade-offs
 
